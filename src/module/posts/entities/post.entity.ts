@@ -9,6 +9,7 @@ import {
   DeleteDateColumn,
   JoinColumn,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -27,7 +28,7 @@ export class Post {
   postedBy: Member;
 
   @ManyToMany(() => Member)
-  @JoinColumn()
+  @JoinTable()
   likes: Member[];
 
   @CreateDateColumn({ select: false })
