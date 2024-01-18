@@ -25,6 +25,9 @@ export class Club {
   @Column()
   isActive: boolean;
 
+  @Column()
+  isCommon: boolean;
+
   @ManyToOne(() => SportType, { eager: true })
   sportType: SportType;
 
