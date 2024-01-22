@@ -7,6 +7,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { TransformInterceptor } from './core/transform.interceptor';
+import { JwtAuthGuard } from './module/auth/guard/jwt-auth.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,9 +18,13 @@ async function bootstrap() {
 
   app.enableCors({ origin: true, credentials: true });
 
+  // set global for jwt guard
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
+
   // set global for interceptor
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
+  // validation config for class-validator
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -30,6 +35,7 @@ async function bootstrap() {
   // config css, js, image location
   app.useStaticAssets(join(__dirname, '..', 'public'));
 
+  // config api version
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',

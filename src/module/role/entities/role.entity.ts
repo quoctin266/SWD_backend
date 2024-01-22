@@ -20,7 +20,7 @@ export class Role {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
   @ManyToMany(() => Permission, (permission) => permission.roles, {
