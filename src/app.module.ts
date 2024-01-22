@@ -5,7 +5,7 @@ import { UsersModule } from './module/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmAsyncConfig } from './database/datasource.config';
-import { RoleModule } from './module/role/role.module';
+import { RolesModule } from './module/role/roles.module';
 import { PermissionsModule } from './module/permissions/permissions.module';
 import { AreasModule } from './module/areas/areas.module';
 import { SportTypesModule } from './module/sport-types/sport-types.module';
@@ -19,6 +19,7 @@ import { CommentsModule } from './module/comments/comments.module';
 import { ApplicationsModule } from './module/applications/applications.module';
 import { WalletsModule } from './module/wallets/wallets.module';
 import { TransactionsModule } from './module/transactions/transactions.module';
+import { AuthModule } from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { TransactionsModule } from './module/transactions/transactions.module';
     }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     UsersModule,
-    RoleModule,
+    RolesModule,
     PermissionsModule,
     AreasModule,
     SportTypesModule,
@@ -42,6 +43,7 @@ import { TransactionsModule } from './module/transactions/transactions.module';
     ApplicationsModule,
     WalletsModule,
     TransactionsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

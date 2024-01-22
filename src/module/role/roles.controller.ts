@@ -7,15 +7,15 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { RoleService } from './role.service';
+import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('roles')
 @Controller('roles')
-export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+export class RolesController {
+  constructor(private readonly roleService: RolesService) {}
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
@@ -29,7 +29,7 @@ export class RoleController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roleService.findOne(+id);
+    return '';
   }
 
   @Patch(':id')
