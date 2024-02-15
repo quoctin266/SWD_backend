@@ -12,7 +12,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
     database: configService.get('DB_NAME'),
     password: configService.get('DB_PASSWORD'),
     autoLoadEntities: true,
-    synchronize: true,
+    synchronize: false,
     // migrationsRun: true,
     // migrations: [join(__dirname, 'migration', '*.{ts,js}')],
     // factories: ['src/factories/*.ts'],
