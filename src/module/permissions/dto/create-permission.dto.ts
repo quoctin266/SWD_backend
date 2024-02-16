@@ -12,7 +12,7 @@ export class CreatePermissionDto {
   @IsNotEmpty()
   @IsArray()
   @ApiProperty({
-    example: ['ADMIN', 'USER'],
+    example: [1, 2],
     default: null,
     type: String,
   })
