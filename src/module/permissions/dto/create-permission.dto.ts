@@ -16,7 +16,7 @@ export class CreatePermissionDto {
     default: null,
     type: String,
   })
-  roles: String[];
+  roles: number[];
 
   @IsNotEmpty()
   @IsString()
