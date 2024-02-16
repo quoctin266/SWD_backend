@@ -15,8 +15,8 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
     synchronize: true,
     // migrationsRun: true,
     // migrations: [join(__dirname, 'migration', '*.{ts,js}')],
-    // factories: ['src/factories/*.ts'],
-    // seeds: ['src/seeder/*.ts'],
+    factories: ['src/database/factories/*.ts'],
+    seeds: ['src/database/seeds/*.ts'],
   }),
   inject: [ConfigService],
 };
