@@ -14,7 +14,10 @@ export class Permission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    unique: true
+  })
   name: string;
 
   @Column({ nullable: true })
@@ -37,4 +40,5 @@ export class Permission {
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;
+
 }
