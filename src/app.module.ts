@@ -20,6 +20,7 @@ import { ApplicationsModule } from './module/applications/applications.module';
 import { WalletsModule } from './module/wallets/wallets.module';
 import { TransactionsModule } from './module/transactions/transactions.module';
 import { AuthModule } from './module/auth/auth.module';
+import { DatabasesModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AuthModule } from './module/auth/auth.module';
     WalletsModule,
     TransactionsModule,
     AuthModule,
+    DatabasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
