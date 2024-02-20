@@ -20,7 +20,7 @@ export class Court {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: true })
   isAvailable: boolean;
 
   @ManyToOne(() => SportType, { eager: true })

@@ -4,8 +4,8 @@ import { SportType } from 'src/module/sport-types/entities/sport-type.entity';
 import { SportTypeData } from '../jsonData/sportType';
 import { Logger } from '@nestjs/common';
 
-export class CompanySeeder implements Seeder {
-  private readonly logger = new Logger(CompanySeeder.name);
+export class SportTypeSeeder implements Seeder {
+  private readonly logger = new Logger(SportTypeSeeder.name);
 
   public async run(dataSource: DataSource): Promise<any> {
     const sportTypesRepository = dataSource.getRepository(SportType);
