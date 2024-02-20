@@ -9,6 +9,12 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { CONFLICT_EMAIL } from 'src/util/message';
 import { RolesService } from '../role/roles.service';
 
+export const hashPassword = async (password: string) => {
+  const salt = await genSalt(10);
+  const hashPW = await hash(password, salt);
+  return hashPW;
+};
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -16,12 +22,6 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private rolesService: RolesService,
   ) {}
-
-  async hashPassword(password: string) {
-    const salt = await genSalt(10);
-    const hashPW = await hash(password, salt);
-    return hashPW;
-  }
 
   async checkPassword(hash: string, password: string) {
     return await compare(password, hash);
@@ -41,7 +41,7 @@ export class UsersService {
     });
     if (user) throw new ConflictException(CONFLICT_EMAIL);
 
-    const hashPW = await this.hashPassword(password);
+    const hashPW = await hashPassword(password);
 
     const role = await this.rolesService.findOneByName('USER');
 
