@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -55,8 +59,22 @@ export class UsersService {
     return result.generatedMaps[0];
   }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const { email, roleId, password } = createUserDto;
+
+    const userExist = await this.usersRepository.findOneBy({ email });
+    if (userExist) throw new BadRequestException(CONFLICT_EMAIL);
+
+    const role = await this.rolesService.findOneById(roleId);
+    const hashPW = await hashPassword(password);
+
+    const result = await this.usersRepository.insert({
+      ...createUserDto,
+      password: hashPW,
+      role,
+    });
+
+    return result.generatedMaps[0];
   }
 
   findAll() {
