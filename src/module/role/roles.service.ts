@@ -24,6 +24,10 @@ export class RolesService {
     return this.rolesRepository.findOneBy({ name });
   }
 
+  findOneById(id: number) {
+    return this.rolesRepository.findOneBy({ id });
+  }
+
   update(id: number, updateRoleDto: UpdateRoleDto) {
     return `This action updates a #${id} role`;
   }

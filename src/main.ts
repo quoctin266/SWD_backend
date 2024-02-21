@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  app.enableCors({ origin: true, credentials: true });
+  app.enableCors({ origin: 'http://localhost:3000', credentials: true });
 
   // set global for jwt guard
   app.useGlobalGuards(new JwtAuthGuard(reflector));
