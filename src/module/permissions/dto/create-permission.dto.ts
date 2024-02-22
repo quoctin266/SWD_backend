@@ -12,11 +12,11 @@ export class CreatePermissionDto {
   @IsNotEmpty()
   @IsArray()
   @ApiProperty({
-    example: [1, 2],
+    example: ['ADMIN', 'USER'],
     default: null,
     type: String,
   })
-  roles: number[];
+  roles: String[];
 
   @IsNotEmpty()
   @IsString()

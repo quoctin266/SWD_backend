@@ -21,12 +21,14 @@ import {
   PERMISSION_UPDATE_SUCCESS,
 } from 'src/util/message';
 
+
 @ApiTags('permissions')
 @Controller('permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Post()
+  @ResponseMessage(PERMISSION_CREATE_SUCCESS)
   @ResponseMessage(PERMISSION_CREATE_SUCCESS)
   create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionsService.create(createPermissionDto);

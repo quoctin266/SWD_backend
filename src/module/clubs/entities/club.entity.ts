@@ -22,13 +22,13 @@ export class Club {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: true })
   isActive: boolean;
 
-  @Column()
+  @Column({ default: false })
   isCommon: boolean;
 
-  @ManyToOne(() => SportType, { eager: true })
+  @ManyToOne(() => SportType, { eager: true, nullable: true })
   sportType: SportType;
 
   @CreateDateColumn({ select: false })

@@ -17,7 +17,7 @@ export class Member {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: false })
   isLeader: boolean;
 
   @ManyToOne(() => User)

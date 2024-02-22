@@ -18,6 +18,7 @@ import {
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { IUser } from '../users/dto/users.dto';
 import { LogoutResponse } from './dto/logout-response.dto';
+import { GoogleAuthDto } from '../users/dto/google-auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -45,6 +46,13 @@ export class AuthController {
   @ResponseMessage(REGISTER_SUCCESS)
   register(@Body() registerUserDTO: RegisterUserDto) {
     return this.usersService.registerUser(registerUserDTO);
+  }
+
+  @Public()
+  @Post('google-auth')
+  @ResponseMessage(LOGIN_SUCCESS)
+  googleAuth(@Body() googleAuthDto: GoogleAuthDto) {
+    return this.authService.googleAuth(googleAuthDto);
   }
 
   // @Get('account')

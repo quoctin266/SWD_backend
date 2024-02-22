@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +13,12 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { CONFLICT_EMAIL } from 'src/util/message';
 import { RolesService } from '../role/roles.service';
 
+export const hashPassword = async (password: string) => {
+  const salt = await genSalt(10);
+  const hashPW = await hash(password, salt);
+  return hashPW;
+};
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -16,12 +26,6 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private rolesService: RolesService,
   ) {}
-
-  async hashPassword(password: string) {
-    const salt = await genSalt(10);
-    const hashPW = await hash(password, salt);
-    return hashPW;
-  }
 
   async checkPassword(hash: string, password: string) {
     return await compare(password, hash);
@@ -41,7 +45,7 @@ export class UsersService {
     });
     if (user) throw new ConflictException(CONFLICT_EMAIL);
 
-    const hashPW = await this.hashPassword(password);
+    const hashPW = await hashPassword(password);
 
     const role = await this.rolesService.findOneByName('USER');
 
@@ -55,8 +59,22 @@ export class UsersService {
     return result.generatedMaps[0];
   }
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const { email, roleId, password } = createUserDto;
+
+    const userExist = await this.usersRepository.findOneBy({ email });
+    if (userExist) throw new BadRequestException(CONFLICT_EMAIL);
+
+    const role = await this.rolesService.findOneById(roleId);
+    const hashPW = await hashPassword(password);
+
+    const result = await this.usersRepository.insert({
+      ...createUserDto,
+      password: hashPW,
+      role,
+    });
+
+    return result.generatedMaps[0];
   }
 
   findAll() {
