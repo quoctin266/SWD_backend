@@ -40,16 +40,26 @@ export class PermissionsService {
     }
   }
 
-  async findAll() {
-    const permissions = await this.permissionRepository.find();
+  async findAll(roleId: number) {
+    let permissions: Permission[];
+    if (!roleId) {
+      permissions = await this.permissionRepository.find();
+    } else {
+      const role = await this.roleRepository.findOne({
+        where: { id: roleId},
+        relations: ['permissions']
+      });
+      permissions = role.permissions;
+    }
     return permissions;
   }
 
   async findOne(id: number) {
-    const existedPermission: Permission[] = await this.permissionRepository.find({
-      where: { id },
-      relations: ['roles'],
-    });
+    const existedPermission: Permission[] =
+      await this.permissionRepository.find({
+        where: { id },
+        relations: ['roles'],
+      });
     if (existedPermission.length === 0) {
       throw new HttpException('Permission not found', HttpStatus.BAD_REQUEST);
     } else {
@@ -58,14 +68,15 @@ export class PermissionsService {
   }
 
   async update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    const updatePermission: Permission = await this.permissionRepository.findOne({
-      where: { id },
-      relations: ['roles'],
-    });
+    const updatePermission: Permission =
+      await this.permissionRepository.findOne({
+        where: { id },
+        relations: ['roles'],
+      });
     if (!updatePermission) {
       throw new HttpException('Permission not found', HttpStatus.BAD_REQUEST);
     } else {
-      var roleArr: Role[] = [];
+      let roleArr: Role[] = [];
       if (updatePermissionDto.roles !== undefined) {
         roleArr = await this.roleRepository.find({
           where: { id: In(updatePermissionDto.roles) },
@@ -86,6 +97,6 @@ export class PermissionsService {
   }
 
   async remove(id: number) {
-    await this.permissionRepository.softDelete({id: id});
+    await this.permissionRepository.softDelete({ id: id });
   }
 }

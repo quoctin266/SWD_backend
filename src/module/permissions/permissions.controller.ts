@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -33,8 +34,8 @@ export class PermissionsController {
 
   @Get()
   @ResponseMessage(PERMISSION_LOAD_SUCCESS)
-  findAll() {
-    return this.permissionsService.findAll();
+  findAll(@Query('roleId', ParseIntPipe) roleId?: number) {
+    return this.permissionsService.findAll(roleId);
   }
 
   @Get(':id')
