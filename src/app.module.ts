@@ -21,6 +21,7 @@ import { WalletsModule } from './module/wallets/wallets.module';
 import { TransactionsModule } from './module/transactions/transactions.module';
 import { AuthModule } from './module/auth/auth.module';
 import { DatabasesModule } from './database/database.module';
+import { FilesModule } from './module/files/files.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { DatabasesModule } from './database/database.module';
     TransactionsModule,
     AuthModule,
     DatabasesModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
