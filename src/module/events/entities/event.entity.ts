@@ -34,7 +34,8 @@ export class Event {
   @Column()
   registrationDeadline: Date;
 
-  @Column()
+  // ONGOING, COMPLETED, CANCELED
+  @Column({ default: 'ONGOING' })
   status: string;
 
   @ManyToOne(() => Club)
