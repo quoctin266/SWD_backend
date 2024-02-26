@@ -21,7 +21,6 @@ import {
   PERMISSION_UPDATE_SUCCESS,
 } from 'src/util/message';
 
-
 @ApiTags('permissions')
 @Controller('permissions')
 export class PermissionsController {
@@ -37,7 +36,7 @@ export class PermissionsController {
   @Get()
   @ResponseMessage(PERMISSION_LOAD_SUCCESS)
   findAll(@Query('roleId', ParseIntPipe) roleId?: number) {
-    return this.permissionsService.findAll(roleId);
+    return this.permissionsService.findAll(roleId ?? null);
   }
 
   @Get(':id')

@@ -40,16 +40,16 @@ export class PermissionsService {
     }
   }
 
-  async findAll(roleId: number) {
+  async findAll(roleId?: number) {
     let permissions: Permission[];
     if (!roleId) {
       permissions = await this.permissionRepository.find();
     } else {
-      const role = await this.roleRepository.findOne({
-        where: { id: roleId},
-        relations: ['permissions']
-      });
-      permissions = role.permissions;
+      const permissionsRole = await this.permissionRepository
+        .createQueryBuilder('permission')
+        .leftJoin('permission.roles', 'role')
+        .where('role.id=:roleId', { roleId });
+      permissions = await permissionsRole.getMany();
     }
     return permissions;
   }
