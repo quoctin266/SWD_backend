@@ -39,9 +39,11 @@ export class SportTypesService {
     const totalItems = (await query.getMany()).length;
     const totalPages = Math.ceil(totalItems / defaultLimit);
 
+    const sortableCriterias = ['name'];
+
     const result = await query
       .orderBy(
-        sortBy === 'name' ? `sportType.${sortBy}` : '',
+        sortableCriterias.includes(sortBy) ? `sportType.${sortBy}` : '',
         sortDescending ? 'DESC' : 'ASC',
       )
       .offset(offset)
@@ -65,8 +67,14 @@ export class SportTypesService {
   }
 
   async update(id: number, updateSportTypeDto: UpdateSportTypeDto) {
+    const { name } = updateSportTypeDto;
+
     const existType = await this.sportTypesRepository.existsBy({ id });
     if (!existType) throw new BadRequestException(NOTFOUND_SPORT_TYPE);
+
+    const sportType = await this.sportTypesRepository.findOneBy({ name });
+    if (sportType && sportType.id !== id)
+      throw new BadRequestException(CONFLICT_SPORT_TYPE);
 
     return this.sportTypesRepository.update(id, updateSportTypeDto);
   }
