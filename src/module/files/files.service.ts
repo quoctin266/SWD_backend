@@ -43,11 +43,14 @@ export class FilesService {
   }
 
   async create(data: UploadFileDto, file: Express.Multer.File) {
-    let res = await this.uploadAWS(data, file);
+    const res = await this.uploadAWS(data, file);
 
     const { Location, Key } = res;
 
-    let result = await this.filesRepository.insert({ url: Location, key: Key });
+    const result = await this.filesRepository.insert({
+      url: Location,
+      key: Key,
+    });
 
     return result.generatedMaps[0];
   }
