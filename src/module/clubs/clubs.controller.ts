@@ -34,8 +34,8 @@ export class ClubsController {
 
   @Get()
   @ResponseMessage(GET_CLUBS)
-  findAll(@Query() query: ClubFilterDto) {
-    return this.clubsService.findAll(query);
+  findList(@Query() query: ClubFilterDto) {
+    return this.clubsService.findList(query);
   }
 
   @Get(':id')

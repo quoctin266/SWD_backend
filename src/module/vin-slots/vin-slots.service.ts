@@ -8,7 +8,7 @@ export class VinSlotsService {
     return 'This action adds a new vinSlot';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all vinSlots`;
   }
 

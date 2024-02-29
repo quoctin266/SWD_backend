@@ -46,7 +46,7 @@ export class PermissionsService {
     }
   }
 
-  async findAll() {
+  async findList() {
     const permissions = await this.permissionRepository.find();
     return permissions;
   }

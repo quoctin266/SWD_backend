@@ -33,8 +33,8 @@ export class PermissionsController {
 
   @Get()
   @ResponseMessage(PERMISSION_LOAD_SUCCESS)
-  findAll() {
-    return this.permissionsService.findAll();
+  findList() {
+    return this.permissionsService.findList();
   }
 
   @Get(':id')

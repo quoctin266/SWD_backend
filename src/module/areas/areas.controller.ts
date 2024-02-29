@@ -35,8 +35,8 @@ export class AreasController {
 
   @Get()
   @ResponseMessage(GET_AREAS)
-  findAll(@Query() query: AreaFilterDto) {
-    return this.areasService.findAll(query);
+  findList(@Query() query: AreaFilterDto) {
+    return this.areasService.findList(query);
   }
 
   @Get(':id')

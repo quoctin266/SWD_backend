@@ -23,8 +23,8 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findList() {
+    return this.postsService.findList();
   }
 
   @Get(':id')

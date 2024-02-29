@@ -44,3 +44,12 @@ export const GET_COURTS = 'Get courts list successfully';
 export const CREATE_COURT = 'Create court successfully';
 export const UPDATE_COURT = 'Update court successfully';
 export const DELETE_COURT = 'Delete court successfully';
+
+export const CONFLICT_EVENT = 'Event already existed';
+export const NOTFOUND_EVENT = 'Event not found';
+export const INVALID_STATUS = 'Invalid status';
+export const GET_EVENT_DETAIL = 'Get event detail successfully';
+export const GET_EVENTS = 'Get events list successfully';
+export const CREATE_EVENT = 'Create event successfully';
+export const UPDATE_EVENT = 'Update event successfully';
+// export const DELETE_COURT = 'Delete court successfully';

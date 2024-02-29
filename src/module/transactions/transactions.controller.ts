@@ -23,8 +23,8 @@ export class TransactionsController {
   }
 
   @Get()
-  findAll() {
-    return this.transactionsService.findAll();
+  findList() {
+    return this.transactionsService.findList();
   }
 
   @Get(':id')

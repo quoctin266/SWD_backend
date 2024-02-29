@@ -23,8 +23,8 @@ export class MembersController {
   }
 
   @Get()
-  findAll() {
-    return this.membersService.findAll();
+  findList() {
+    return this.membersService.findList();
   }
 
   @Get(':id')

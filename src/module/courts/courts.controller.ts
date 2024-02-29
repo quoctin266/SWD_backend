@@ -35,8 +35,8 @@ export class CourtsController {
 
   @Get()
   @ResponseMessage(GET_COURTS)
-  findAll(@Query() query: CourtFilterDto) {
-    return this.courtsService.findAll(query);
+  findList(@Query() query: CourtFilterDto) {
+    return this.courtsService.findList(query);
   }
 
   @Get(':id')
