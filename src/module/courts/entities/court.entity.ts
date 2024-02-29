@@ -7,6 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -34,4 +35,7 @@ export class Court {
 
   @UpdateDateColumn({ select: false })
   updatedAt: Date;
+
+  @DeleteDateColumn({ select: false })
+  deletedAt?: Date;
 }
