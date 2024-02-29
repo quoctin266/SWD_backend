@@ -38,8 +38,8 @@ export class FilesController {
   }
 
   // @Get()
-  // findAll() {
-  //   return this.filesService.findAll();
+  // findList() {
+  //   return this.filesService.findList();
   // }
 
   // @Get(':id')

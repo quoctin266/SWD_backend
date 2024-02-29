@@ -45,7 +45,7 @@ export class ClubsService {
     return result.generatedMaps[0];
   }
 
-  async findAll(queryObj: ClubFilterDto) {
+  async findList(queryObj: ClubFilterDto) {
     const {
       name,
       email,

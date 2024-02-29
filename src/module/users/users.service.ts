@@ -77,7 +77,7 @@ export class UsersService {
     return result.generatedMaps[0];
   }
 
-  findAll() {
+  findList() {
     return `This action returns all users`;
   }
 

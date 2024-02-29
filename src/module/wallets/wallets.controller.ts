@@ -23,8 +23,8 @@ export class WalletsController {
   }
 
   @Get()
-  findAll() {
-    return this.walletsService.findAll();
+  findList() {
+    return this.walletsService.findList();
   }
 
   @Get(':id')

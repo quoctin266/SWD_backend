@@ -52,7 +52,7 @@ export class CourtsService {
     return result.generatedMaps[0];
   }
 
-  async findAll(queryObj: CourtFilterDto) {
+  async findList(queryObj: CourtFilterDto) {
     const {
       name,
       isAvailable,

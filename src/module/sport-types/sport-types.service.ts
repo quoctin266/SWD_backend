@@ -25,7 +25,7 @@ export class SportTypesService {
     return result.generatedMaps[0];
   }
 
-  async findAll(queryObj: SportTypeFilterDto) {
+  async findList(queryObj: SportTypeFilterDto) {
     const { sortBy, sortDescending, current, pageSize, name } = queryObj;
     const defaultLimit = pageSize ? pageSize : 10;
     const defaultPage = current ? current : 1;

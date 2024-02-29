@@ -35,8 +35,8 @@ export class SportTypesController {
 
   @Get()
   @ResponseMessage(GET_SPORT_TYPES)
-  findAll(@Query() query: SportTypeFilterDto) {
-    return this.sportTypesService.findAll(query);
+  findList(@Query() query: SportTypeFilterDto) {
+    return this.sportTypesService.findList(query);
   }
 
   @Get(':id')
