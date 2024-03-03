@@ -82,16 +82,24 @@ export class PermissionsService {
           where: { id: In(updatePermissionDto.roles) },
         });
       }
-      const updatedPermission = await this.permissionRepository.update(
-        { id: id },
-        {
-          name: updatePermissionDto.name,
-          description: updatePermissionDto.description,
-          roles: roleArr.length === 0 ? undefined : roleArr,
-          apiPath: updatePermissionDto.apiPath,
-          method: updatePermissionDto.method.toUpperCase(),
-        },
-      );
+
+      updatePermission.roles = roleArr;
+
+      const updatedPermission: Permission =
+        await this.permissionRepository.save(updatePermission);
+
+      // Not yet been done.
+
+      // const updatedPermission = await this.permissionRepository.update(
+      //   { id: id },
+      //   {
+      //     name: updatePermissionDto.name,
+      //     description: updatePermissionDto.description,
+      //     roles: roleArr.length === 0 ? undefined : roleArr,
+      //     apiPath: updatePermissionDto.apiPath,
+      //     method: updatePermissionDto.method.toUpperCase(),
+      //   },
+      // );
       return updatedPermission;
     }
   }
