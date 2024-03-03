@@ -38,7 +38,7 @@ export class Event {
   @Column({ default: 'ONGOING' })
   status: string;
 
-  @ManyToOne(() => Club)
+  @ManyToOne(() => Club, { eager: true })
   club: Club;
 
   @ManyToMany(() => Member, (member) => member.joinedEvents)

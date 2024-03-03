@@ -8,7 +8,7 @@ export class WalletsService {
     return 'This action adds a new wallet';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all wallets`;
   }
 

@@ -43,11 +43,14 @@ export class FilesService {
   }
 
   async create(data: UploadFileDto, file: Express.Multer.File) {
-    let res = await this.uploadAWS(data, file);
+    const res = await this.uploadAWS(data, file);
 
     const { Location, Key } = res;
 
-    let result = await this.filesRepository.insert({ url: Location, key: Key });
+    const result = await this.filesRepository.insert({
+      url: Location,
+      key: Key,
+    });
 
     return result.generatedMaps[0];
   }
@@ -86,7 +89,7 @@ export class FilesService {
   // create(createFileDto: CreateFileDto) {
   //   return 'This action adds a new file';
   // }
-  // findAll() {
+  // findList() {
   //   return `This action returns all files`;
   // }
   // findOne(id: number) {

@@ -3,14 +3,23 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { ClubsService } from './clubs.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ResponseMessage } from 'src/decorator/customize';
+import {
+  CREATE_CLUB,
+  GET_CLUBS,
+  GET_CLUB_DETAIL,
+  UPDATE_CLUB,
+} from 'src/util/message';
+import { ClubFilterDto } from './dto/filter-club.dto';
 
 @ApiTags('clubs')
 @Controller('clubs')
@@ -18,22 +27,26 @@ export class ClubsController {
   constructor(private readonly clubsService: ClubsService) {}
 
   @Post()
+  @ResponseMessage(CREATE_CLUB)
   create(@Body() createClubDto: CreateClubDto) {
     return this.clubsService.create(createClubDto);
   }
 
   @Get()
-  findAll() {
-    return this.clubsService.findAll();
+  @ResponseMessage(GET_CLUBS)
+  findList(@Query() query: ClubFilterDto) {
+    return this.clubsService.findList(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ResponseMessage(GET_CLUB_DETAIL)
+  findOne(@Param('id') id: number) {
     return this.clubsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClubDto: UpdateClubDto) {
+  @Put(':id')
+  @ResponseMessage(UPDATE_CLUB)
+  update(@Param('id') id: number, @Body() updateClubDto: UpdateClubDto) {
     return this.clubsService.update(+id, updateClubDto);
   }
 
