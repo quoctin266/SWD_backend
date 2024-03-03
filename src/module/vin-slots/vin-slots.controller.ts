@@ -23,8 +23,8 @@ export class VinSlotsController {
   }
 
   @Get()
-  findAll() {
-    return this.vinSlotsService.findAll();
+  findList() {
+    return this.vinSlotsService.findList();
   }
 
   @Get(':id')

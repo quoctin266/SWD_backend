@@ -23,8 +23,8 @@ export class ApplicationsController {
   }
 
   @Get()
-  findAll() {
-    return this.applicationsService.findAll();
+  findList() {
+    return this.applicationsService.findList();
   }
 
   @Get(':id')

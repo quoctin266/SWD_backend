@@ -89,7 +89,7 @@ export class FilesService {
   // create(createFileDto: CreateFileDto) {
   //   return 'This action adds a new file';
   // }
-  // findAll() {
+  // findList() {
   //   return `This action returns all files`;
   // }
   // findOne(id: number) {

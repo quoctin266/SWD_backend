@@ -8,7 +8,7 @@ export class CommentsService {
     return 'This action adds a new comment';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all comments`;
   }
 

@@ -23,8 +23,8 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  findList() {
+    return this.commentsService.findList();
   }
 
   @Get(':id')

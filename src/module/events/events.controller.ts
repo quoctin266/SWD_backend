@@ -3,14 +3,23 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
+  // Delete,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ResponseMessage } from 'src/decorator/customize';
+import {
+  CREATE_EVENT,
+  GET_EVENTS,
+  GET_EVENT_DETAIL,
+  UPDATE_EVENT,
+} from 'src/util/message';
+import { EventFilterDto } from './dto/filter-event.dto';
 
 @ApiTags('events')
 @Controller('events')
@@ -18,27 +27,31 @@ export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Post()
+  @ResponseMessage(CREATE_EVENT)
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }
 
   @Get()
-  findAll() {
-    return this.eventsService.findAll();
+  @ResponseMessage(GET_EVENTS)
+  findList(@Query() query: EventFilterDto) {
+    return this.eventsService.findList(query);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ResponseMessage(GET_EVENT_DETAIL)
+  findOne(@Param('id') id: number) {
     return this.eventsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
+  @Put(':id')
+  @ResponseMessage(UPDATE_EVENT)
+  update(@Param('id') id: number, @Body() updateEventDto: UpdateEventDto) {
     return this.eventsService.update(+id, updateEventDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.eventsService.remove(+id);
+  // }
 }

@@ -8,7 +8,7 @@ export class ApplicationsService {
     return 'This action adds a new application';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all applications`;
   }
 

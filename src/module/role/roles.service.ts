@@ -16,7 +16,7 @@ export class RolesService {
     return 'This action adds a new role';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all role`;
   }
 

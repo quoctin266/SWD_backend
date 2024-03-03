@@ -8,7 +8,7 @@ export class MembersService {
     return 'This action adds a new member';
   }
 
-  findAll() {
+  findList() {
     return `This action returns all members`;
   }
 

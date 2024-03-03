@@ -25,7 +25,7 @@ export class AreasService {
     return result.generatedMaps[0];
   }
 
-  async findAll(queryObj: AreaFilterDto) {
+  async findList(queryObj: AreaFilterDto) {
     const { sortBy, sortDescending, current, pageSize, name } = queryObj;
     const defaultLimit = pageSize ? pageSize : 10;
     const defaultPage = current ? current : 1;
