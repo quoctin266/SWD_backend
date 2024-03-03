@@ -52,4 +52,13 @@ export const GET_EVENT_DETAIL = 'Get event detail successfully';
 export const GET_EVENTS = 'Get events list successfully';
 export const CREATE_EVENT = 'Create event successfully';
 export const UPDATE_EVENT = 'Update event successfully';
-// export const DELETE_COURT = 'Delete court successfully';
+
+// export const CONFLICT_EVENT = 'Event already existed';
+export const NOTFOUND_MEMBER = 'Member not found';
+export const GET_MEMBER_DETAIL = 'Get member detail successfully';
+export const GET_MEMBERS = 'Get members list successfully';
+export const CREATE_MEMBER = 'Create member successfully';
+export const UPDATE_MEMBER = 'Update member successfully';
+export const DELETE_MEMBER = 'Delete member successfully';
+
+export const NOTFOUND_USER = 'User not found';

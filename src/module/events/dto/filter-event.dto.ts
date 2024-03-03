@@ -14,6 +14,11 @@ export class EventFilterDto {
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
+  memberId?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   clubId?: number;
 
   @IsOptional()
