@@ -93,7 +93,7 @@ export class ClubsService {
     const data = result.map((club) => {
       return {
         ...club,
-        sportType: club.sportType.name,
+        sportType: club.sportType?.name,
       };
     });
 
