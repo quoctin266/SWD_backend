@@ -23,8 +23,8 @@ export class RolesController {
   }
 
   @Get()
-  findAll() {
-    return this.roleService.findAll();
+  findList() {
+    return this.roleService.findList();
   }
 
   @Get(':id')
