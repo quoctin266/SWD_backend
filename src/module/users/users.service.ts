@@ -12,6 +12,8 @@ import { compare, genSalt, hash } from 'bcryptjs';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { CONFLICT_EMAIL } from 'src/util/message';
 import { RolesService } from '../role/roles.service';
+import { Member } from '../members/entities/member.entity';
+import { Club } from '../clubs/entities/club.entity';
 
 export const hashPassword = async (password: string) => {
   const salt = await genSalt(10);
@@ -25,6 +27,10 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private rolesService: RolesService,
+    @InjectRepository(Member)
+    private membersRepository: Repository<Member>,
+    @InjectRepository(Club)
+    private clubsRepository: Repository<Club>,
   ) {}
 
   async checkPassword(hash: string, password: string) {
@@ -56,6 +62,17 @@ export class UsersService {
       role,
     });
 
+    // add user to common club
+    const createdUser = await this.usersRepository.findOneBy({ email });
+    const commonClub = await this.clubsRepository.findOne({
+      where: { isCommon: true },
+    });
+
+    await this.membersRepository.insert({
+      user: createdUser,
+      club: commonClub,
+    });
+
     return result.generatedMaps[0];
   }
 
@@ -72,6 +89,17 @@ export class UsersService {
       ...createUserDto,
       password: hashPW,
       role,
+    });
+
+    // add user to common club
+    const createdUser = await this.usersRepository.findOneBy({ email });
+    const commonClub = await this.clubsRepository.findOne({
+      where: { isCommon: true },
+    });
+
+    await this.membersRepository.insert({
+      user: createdUser,
+      club: commonClub,
     });
 
     return result.generatedMaps[0];

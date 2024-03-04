@@ -20,16 +20,16 @@ export class Member {
   @Column({ default: false })
   isLeader: boolean;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { eager: true })
   user: User;
 
-  @ManyToOne(() => Club)
+  @ManyToOne(() => Club, { eager: true })
   club: Club;
 
   @ManyToMany(() => Event, (event) => event.participants)
   joinedEvents: Event[];
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn({ select: false })
