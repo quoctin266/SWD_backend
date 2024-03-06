@@ -28,7 +28,6 @@ export class PermissionsController {
 
   @Post()
   @ResponseMessage(PERMISSION_CREATE_SUCCESS)
-  @ResponseMessage(PERMISSION_CREATE_SUCCESS)
   create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionsService.create(createPermissionDto);
   }

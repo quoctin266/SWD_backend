@@ -68,11 +68,10 @@ export class PermissionsService {
   }
 
   async update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    const updatePermission: Permission =
-      await this.permissionRepository.findOne({
-        where: { id },
-        relations: ['roles'],
-      });
+    let updatePermission: Permission = await this.permissionRepository.findOne({
+      where: { id },
+      relations: ['roles'],
+    });
     if (!updatePermission) {
       throw new HttpException('Permission not found', HttpStatus.BAD_REQUEST);
     } else {
@@ -82,24 +81,15 @@ export class PermissionsService {
           where: { id: In(updatePermissionDto.roles) },
         });
       }
-
-      updatePermission.roles = roleArr;
+      updatePermission = {
+        ...updatePermission,
+        ...updatePermissionDto,
+        roles: roleArr,
+      };
 
       const updatedPermission: Permission =
         await this.permissionRepository.save(updatePermission);
 
-      // Not yet been done.
-
-      // const updatedPermission = await this.permissionRepository.update(
-      //   { id: id },
-      //   {
-      //     name: updatePermissionDto.name,
-      //     description: updatePermissionDto.description,
-      //     roles: roleArr.length === 0 ? undefined : roleArr,
-      //     apiPath: updatePermissionDto.apiPath,
-      //     method: updatePermissionDto.method.toUpperCase(),
-      //   },
-      // );
       return updatedPermission;
     }
   }
