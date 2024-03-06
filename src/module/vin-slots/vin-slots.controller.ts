@@ -1,23 +1,16 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Query } from '@nestjs/common';
 import { VinSlotsService } from './vin-slots.service';
 import { CreateVinSlotDto } from './dto/create-vin-slot.dto';
 import { UpdateVinSlotDto } from './dto/update-vin-slot.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
-  SUCCESS_CREATE_VINSLOT,
-  SUCCESS_DELETE_VINSLOT,
-  SUCCESS_GET_VINSLOT,
-  SUCCESS_UPDATE_VINSLOT,
+  CREATE_SLOT,
+  GET_SLOTS,
+  GET_SLOT_DETAIL,
+  UPDATE_SLOT,
 } from 'src/util/message';
+import { VinSlotFilterDto } from './dto/filter-vin-slot.dto';
 
 @ApiTags('vin slots')
 @Controller('vin-slots')
@@ -25,32 +18,33 @@ export class VinSlotsController {
   constructor(private readonly vinSlotsService: VinSlotsService) {}
 
   @Post()
-  @ResponseMessage(SUCCESS_CREATE_VINSLOT)
+  @ResponseMessage(CREATE_SLOT)
   create(@Body() createVinSlotDto: CreateVinSlotDto) {
     return this.vinSlotsService.create(createVinSlotDto);
   }
 
+  @Public()
   @Get()
-  @ResponseMessage(SUCCESS_GET_VINSLOT)
-  findList() {
-    return this.vinSlotsService.findList();
+  @ResponseMessage(GET_SLOTS)
+  findList(@Query() query: VinSlotFilterDto) {
+    return this.vinSlotsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
-  @ResponseMessage(SUCCESS_GET_VINSLOT)
-  findOne(@Param('id') id: string) {
+  @ResponseMessage(GET_SLOT_DETAIL)
+  findOne(@Param('id') id: number) {
     return this.vinSlotsService.findOne(+id);
   }
 
-  @Patch(':id')
-  @ResponseMessage(SUCCESS_UPDATE_VINSLOT)
-  update(@Param('id') id: string, @Body() updateVinSlotDto: UpdateVinSlotDto) {
+  @Put(':id')
+  @ResponseMessage(UPDATE_SLOT)
+  update(@Param('id') id: number, @Body() updateVinSlotDto: UpdateVinSlotDto) {
     return this.vinSlotsService.update(+id, updateVinSlotDto);
   }
 
-  @Delete(':id')
-  @ResponseMessage(SUCCESS_DELETE_VINSLOT)
-  remove(@Param('id') id: string) {
-    return this.vinSlotsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: number) {
+  //   return this.vinSlotsService.remove(+id);
+  // }
 }

@@ -53,7 +53,6 @@ export const GET_EVENTS = 'Get events list successfully';
 export const CREATE_EVENT = 'Create event successfully';
 export const UPDATE_EVENT = 'Update event successfully';
 
-// export const CONFLICT_EVENT = 'Event already existed';
 export const NOTFOUND_MEMBER = 'Member not found';
 export const GET_MEMBER_DETAIL = 'Get member detail successfully';
 export const GET_MEMBERS = 'Get members list successfully';
@@ -83,3 +82,11 @@ export const SUCCESS_DELETE_VINSLOT = 'Delete vinSlot successfully';
 export const BAD_TIME_INPUT_VINSLOT = 'End time must be after begin time';
 
 export const NOTFOUND_USER = 'User not found';
+
+export const CONFLICT_SLOT = 'Slot time conflict';
+export const NOTFOUND_SLOT = 'Slot not found';
+export const INVALID_CAPACITY = 'Invalid capacity';
+export const GET_SLOT_DETAIL = 'Get slot detail successfully';
+export const GET_SLOTS = 'Get slots list successfully';
+export const CREATE_SLOT = 'Create slot successfully';
+export const UPDATE_SLOT = 'Update slot successfully';
