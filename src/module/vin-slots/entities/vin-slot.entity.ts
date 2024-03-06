@@ -1,3 +1,4 @@
+import { Application } from 'src/module/applications/entities/application.entity';
 import { Court } from 'src/module/courts/entities/court.entity';
 import { Member } from 'src/module/members/entities/member.entity';
 import {
@@ -8,6 +9,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -18,7 +20,8 @@ export class VinSlot {
   @Column()
   capacity: number;
 
-  @Column()
+  // ONGOING, COMPLETED, CANCELED
+  @Column({ default: 'ONGOING' })
   status: string;
 
   @Column()
@@ -27,15 +30,18 @@ export class VinSlot {
   @Column()
   endAt: Date;
 
-  @ManyToOne(() => Court)
+  @ManyToOne(() => Court, { eager: true })
   court: Court;
 
-  @ManyToOne(() => Member)
+  @ManyToOne(() => Member, { eager: true })
   @JoinColumn({
     name: 'createdBy',
     referencedColumnName: 'id',
   })
   createdBy: Member;
+
+  @OneToMany(() => Application, (application) => application.vinSlot)
+  applications: Application[];
 
   @CreateDateColumn({ select: false })
   createdAt: Date;
