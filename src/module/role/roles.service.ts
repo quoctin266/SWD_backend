@@ -38,12 +38,11 @@ export class RolesService {
     const filteredPermissions: Permission[] = permissions.filter((permission) =>
       createRoleDto.permissions.includes(permission.id),
     );
-    const roleDto: Role = this.rolesRepository.create({
+    const createdRole = await this.rolesRepository.insert({
       ...createRoleDto,
       permissions: filteredPermissions,
     });
-    const createdRole = await this.rolesRepository.save(roleDto);
-    if (createRoleDto) {
+    if (createdRole) {
       return createdRole;
     } else {
       throw new BadRequestException(FAIL_CREATE_ROLE);
