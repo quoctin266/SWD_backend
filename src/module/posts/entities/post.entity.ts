@@ -1,4 +1,5 @@
 import { Member } from 'src/module/members/entities/member.entity';
+import { VinSlot } from 'src/module/vin-slots/entities/vin-slot.entity';
 import {
   Entity,
   Column,
@@ -30,6 +31,9 @@ export class Post {
   @ManyToMany(() => Member)
   @JoinTable()
   likes: Member[];
+
+  @ManyToOne(() => VinSlot)
+  vinSlot: VinSlot;
 
   @CreateDateColumn({ select: false })
   createdAt: Date;
