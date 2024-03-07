@@ -36,5 +36,11 @@ export class ClubFilterDto {
   sortBy?: string;
 
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  @IsBoolean()
   sortDescending?: boolean;
 }

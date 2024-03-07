@@ -10,10 +10,16 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { CONFLICT_EMAIL } from 'src/util/message';
+import {
+  CONFLICT_EMAIL,
+  CONFLICT_USERNAME,
+  NOTFOUND_USER,
+} from 'src/util/message';
 import { RolesService } from '../role/roles.service';
 import { Member } from '../members/entities/member.entity';
 import { Club } from '../clubs/entities/club.entity';
+import { Role } from '../role/entities/role.entity';
+import { UserFilterDto } from './dto/filter-user.dto';
 
 export const hashPassword = async (password: string) => {
   const salt = await genSalt(10);
@@ -105,8 +111,81 @@ export class UsersService {
     return result.generatedMaps[0];
   }
 
-  findList() {
-    return `This action returns all users`;
+  async findList(queryObj: UserFilterDto) {
+    const {
+      username,
+      email,
+      phone,
+      isActive,
+      roleId,
+      sortBy,
+      sortDescending,
+      pageSize,
+      current,
+    } = queryObj;
+
+    const defaultLimit = pageSize ? pageSize : 10;
+    const defaultPage = current ? current : 1;
+    const offset = (defaultPage - 1) * defaultLimit;
+
+    const query = this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role');
+
+    if (username)
+      query.andWhere('user.username ILike :username', {
+        username: `%${username}%`,
+      });
+    if (email)
+      query.andWhere('user.email ILike :email', {
+        email: `%${email}%`,
+      });
+    if (phone)
+      query.andWhere('user.phone ILike :phone', {
+        phone: `%${phone}%`,
+      });
+    if (typeof isActive === 'boolean')
+      query.andWhere('user.isActive = :isActive', { isActive });
+    if (roleId) query.andWhere('role.id =:id', { id: roleId });
+
+    const totalItems = (await query.getMany()).length;
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const sortableCriterias = ['username', 'email', 'dob'];
+
+    const result = await query
+      .orderBy(
+        sortableCriterias.includes(sortBy) ? `user.${sortBy}` : '',
+        sortDescending ? 'DESC' : 'ASC',
+      )
+      .offset(offset)
+      .limit(defaultLimit)
+      .getMany();
+
+    const data = result.map((user) => {
+      return {
+        ...user,
+        role: user.role.name,
+      };
+    });
+
+    return {
+      currentPage: defaultPage,
+      totalPages: totalPages,
+      pageSize: defaultLimit,
+      totalItems: totalItems,
+      items: data,
+    };
+  }
+
+  async findOne(id: number) {
+    const user = await this.usersRepository.findOneBy({ id });
+    if (!user) throw new BadRequestException(NOTFOUND_USER);
+
+    return {
+      ...user,
+      role: user.role.name,
+    };
   }
 
   findOneByToken(refreshToken: string) {
@@ -122,8 +201,30 @@ export class UsersService {
       .getOne();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const { username, password, roleId, ...rest } = updateUserDto;
+
+    const user = await this.usersRepository.findOneBy({ username });
+    if (user && user.id !== id)
+      throw new BadRequestException(CONFLICT_USERNAME);
+
+    const role = await this.rolesService.findOneById(roleId);
+    if (!role) throw new BadRequestException('Role not found'); // change this later
+
+    let hashPW = '';
+    if (password) {
+      hashPW = await hashPassword(password);
+    }
+
+    const existUser = await this.usersRepository.existsBy({ id });
+    if (!existUser) throw new BadRequestException(NOTFOUND_USER);
+
+    return this.usersRepository.update(id, {
+      username,
+      role,
+      password: hashPW,
+      ...rest,
+    });
   }
 
   remove(id: number) {

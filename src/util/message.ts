@@ -61,6 +61,11 @@ export const UPDATE_MEMBER = 'Update member successfully';
 export const DELETE_MEMBER = 'Delete member successfully';
 
 export const NOTFOUND_USER = 'User not found';
+export const GET_USER_DETAIL = 'Get user detail successfully';
+export const GET_USERS = 'Get users list successfully';
+export const CREATE_USER = 'Create user successfully';
+export const UPDATE_USER = 'Update user successfully';
+export const CONFLICT_USERNAME = 'Username already existed';
 
 export const CONFLICT_SLOT = 'Slot time conflict';
 export const NOTFOUND_SLOT = 'Slot not found';
