@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { PostFilterDto } from './dto/filter-post.dto';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -23,8 +25,8 @@ export class PostsController {
   }
 
   @Get()
-  findList() {
-    return this.postsService.findList();
+  findList(@Query() query: PostFilterDto) {
+    return this.postsService.findList(query);
   }
 
   @Get(':id')

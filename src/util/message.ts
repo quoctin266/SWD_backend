@@ -13,6 +13,11 @@ export const PERMISSION_UPDATE_SUCCESS = 'Permissions updated successfully';
 export const PERMISSION_DELETE_SUCCESS = 'Permissions deleted successfully';
 export const PERMISSION_CREATE_SUCCESS = 'Permissions deleted successfully';
 
+export const ROLE_LOAD_SUCCESS = 'Role loaded successfully';
+export const ROLE_UPDATE_SUCCESS = 'Role updated successfully';
+export const ROLE_DELETE_SUCCESS = 'Role deleted successfully';
+export const ROLE_CREATE_SUCCESS = 'Role deleted successfully';
+
 export const CONFLICT_SPORT_TYPE = 'Sport type already existed';
 export const NOTFOUND_SPORT_TYPE = 'Sport type not found';
 export const GET_SPORT_TYPE_DETAIL = 'Get sport type detail successfully';
@@ -69,3 +74,10 @@ export const GET_SLOT_DETAIL = 'Get slot detail successfully';
 export const GET_SLOTS = 'Get slots list successfully';
 export const CREATE_SLOT = 'Create slot successfully';
 export const UPDATE_SLOT = 'Update slot successfully';
+
+export const GET_POST_SUCCESS = 'Post(s) loaded successfully';
+export const UPDATE_POST_SUCCESS = 'Post(s) updated successfully';
+export const DELTE_POST_SUCCESS = 'Post(s) deleted successfully';
+export const CREATE_POST_SUCCESS = 'Post(s) deleted successfully';
+export const INVALID_POST_ERROR = 'Post duplicated';
+export const NOTFOUND_POST = 'Post not found';
