@@ -12,7 +12,7 @@ import { ClubsService } from './clubs.service';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   CREATE_CLUB,
   GET_CLUBS,
@@ -32,12 +32,14 @@ export class ClubsController {
     return this.clubsService.create(createClubDto);
   }
 
+  @Public()
   @Get()
   @ResponseMessage(GET_CLUBS)
   findList(@Query() query: ClubFilterDto) {
     return this.clubsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(GET_CLUB_DETAIL)
   findOne(@Param('id') id: number) {
