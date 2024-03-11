@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PostFilterDto } from './dto/filter-post.dto';
+import { ReactionFilterDto } from './dto/filter-reaction.dto';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -42,5 +44,10 @@ export class PostsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postsService.remove(+id);
+  }
+
+  @Put('/reactions/:postId')
+  likePost(@Param('postId') postId: string, @Query() query: ReactionFilterDto) {
+    return this.postsService.likePost(+postId, query);
   }
 }

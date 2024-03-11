@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -23,13 +24,9 @@ export class Role {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToMany(
-    () => Permission,
-    (permission) => permission.roles,
-    {
-      eager: true,
-    }
-  )
+  @ManyToMany(() => Permission, (permission) => permission.roles, {
+    eager: true,
+  })
   @JoinTable()
   permissions: Permission[];
 

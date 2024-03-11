@@ -13,11 +13,6 @@ export const PERMISSION_UPDATE_SUCCESS = 'Permissions updated successfully';
 export const PERMISSION_DELETE_SUCCESS = 'Permissions deleted successfully';
 export const PERMISSION_CREATE_SUCCESS = 'Permissions deleted successfully';
 
-export const ROLE_LOAD_SUCCESS = 'Role loaded successfully';
-export const ROLE_UPDATE_SUCCESS = 'Role updated successfully';
-export const ROLE_DELETE_SUCCESS = 'Role deleted successfully';
-export const ROLE_CREATE_SUCCESS = 'Role deleted successfully';
-
 export const CONFLICT_SPORT_TYPE = 'Sport type already existed';
 export const NOTFOUND_SPORT_TYPE = 'Sport type not found';
 export const GET_SPORT_TYPE_DETAIL = 'Get sport type detail successfully';
@@ -64,6 +59,27 @@ export const GET_MEMBERS = 'Get members list successfully';
 export const CREATE_MEMBER = 'Create member successfully';
 export const UPDATE_MEMBER = 'Update member successfully';
 export const DELETE_MEMBER = 'Delete member successfully';
+
+export const ROLE_LOAD_SUCCESS = 'Role loaded successfully';
+export const ROLE_UPDATE_SUCCESS = 'Role updated successfully';
+export const ROLE_DELETE_SUCCESS = 'Role deleted successfully';
+export const ROLE_CREATE_SUCCESS = 'Role deleted successfully';
+export const FAIL_CREATE_ROLE = 'Role can not be created';
+export const FAIL_UPDATE_ROLE = 'Role can not be updated';
+export const FAIL_DELETE_ROLE = 'Role can not be deleted';
+export const FAIL_LOAD_ROLE = 'Role can not be loaded';
+export const DUPLICATED_ROLE = 'Role already existed';
+
+export const DUPLICATED_VINSLOT = 'VinSlot already existed';
+export const NOTFOUND_VINSLOT = 'VinSlot not found';
+export const SUCCESS_GET_VINSLOT = 'Get vinSlot detail successfully';
+export const FAIL_GET_VINSLOT = 'Fail to get vinSlot detail';
+export const SUCCESS_CREATE_VINSLOT = 'Create vinSlot successfully';
+export const FAIL_CREATE_VINSLOT = 'Fail to create vinSlot';
+export const SUCCESS_UPDATE_VINSLOT = 'Update vinSlot successfully';
+export const FAIL_UPDATE_VINSLOT = 'Fail to update vinSlot';
+export const SUCCESS_DELETE_VINSLOT = 'Delete vinSlot successfully';
+export const BAD_TIME_INPUT_VINSLOT = 'End time must be after begin time';
 
 export const NOTFOUND_USER = 'User not found';
 

@@ -33,13 +33,13 @@ export class RolesController {
   @Get()
   @ResponseMessage(ROLE_LOAD_SUCCESS)
   findList() {
-    return this.roleService.findList();
+    return this.roleService.findAll();
   }
 
   @Get(':id')
   @ResponseMessage(ROLE_LOAD_SUCCESS)
   findOne(@Param('id') id: string) {
-    return '';
+    return this.roleService.findOneById(+id);
   }
 
   @Patch(':id')
