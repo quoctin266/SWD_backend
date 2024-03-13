@@ -58,8 +58,7 @@ export class MembersService {
       .leftJoin('member.club', 'club')
       .leftJoin('member.user', 'user')
       .leftJoin('member.joinedEvents', 'event')
-      .select(['club.name', 'user.username', 'event.id', 'member'])
-      .andWhere('club.name != :name', { name: 'Common' });
+      .select(['club.name', 'user.username', 'event.id', 'member']);
 
     if (typeof isLeader === 'boolean')
       query.andWhere('member.isLeader = :isLeader', { isLeader });
@@ -68,6 +67,7 @@ export class MembersService {
       query.addSelect('club.id').andWhere('club.id =:id', { id: clubId });
     if (userId)
       query.addSelect('user.id').andWhere('user.id =:id', { id: userId });
+    else query.andWhere('club.name != :name', { name: 'Common' });
 
     const totalItems = (await query.getMany()).length;
     const totalPages = Math.ceil(totalItems / defaultLimit);

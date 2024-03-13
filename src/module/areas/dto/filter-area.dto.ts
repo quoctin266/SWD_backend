@@ -1,5 +1,5 @@
-import { Type } from 'class-transformer';
-import { IsNumber, IsOptional } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
 export class AreaFilterDto {
   @IsOptional()
@@ -19,5 +19,11 @@ export class AreaFilterDto {
   sortBy?: string;
 
   @IsOptional()
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
+  @IsBoolean()
   sortDescending?: boolean;
 }
