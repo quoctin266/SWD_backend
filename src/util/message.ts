@@ -74,3 +74,9 @@ export const GET_SLOT_DETAIL = 'Get slot detail successfully';
 export const GET_SLOTS = 'Get slots list successfully';
 export const CREATE_SLOT = 'Create slot successfully';
 export const UPDATE_SLOT = 'Update slot successfully';
+
+export const GET_APPLICATION_DETAIL = 'Get application detail successfully';
+export const NOTFOUND_APPLICATION = 'Application not found';
+export const GET_APPLICATIONS = 'Get applications list successfully';
+export const CREATE_APPLICATION = 'Create application successfully';
+export const UPDATE_APPLICATION = 'Update application successfully';
