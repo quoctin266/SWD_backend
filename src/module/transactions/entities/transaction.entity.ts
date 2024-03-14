@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -21,26 +22,29 @@ export class Transaction {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => Application)
+  @ManyToOne(() => Application, { nullable: true, eager: true })
   application: Application;
 
-  @ManyToOne(() => Wallet)
+  @ManyToOne(() => Wallet, { eager: true })
   @JoinColumn({
     name: 'sender',
     referencedColumnName: 'id',
   })
   sender: Wallet;
 
-  @ManyToOne(() => Wallet)
+  @ManyToOne(() => Wallet, { eager: true })
   @JoinColumn({
     name: 'receiver',
     referencedColumnName: 'id',
   })
   receiver: Wallet;
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn({ select: false })
   updatedAt: Date;
+
+  @DeleteDateColumn({ select: false })
+  deletedAt?: Date;
 }
