@@ -18,16 +18,13 @@ export class WalletSeeder implements Seeder {
       const allClubsList = await clubsRepository.find();
 
       const commonClub = allClubsList.find((club) => club.isCommon === true);
-      const normalClubsList = allClubsList.filter(
-        (club) => club.isCommon === false,
-      );
       const commonMembersList = await membersRepository.findBy({
         club: commonClub,
       });
 
       // insert clubs wallet data
       await Promise.all(
-        normalClubsList.map(async (club) => {
+        allClubsList.map(async (club) => {
           // random 50 - 150 point
           const balance = Math.floor(Math.random() * (150 - 50 + 1) + 50);
           return walletsRepository.insert({ balance, club });

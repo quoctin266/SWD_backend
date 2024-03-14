@@ -6,9 +6,13 @@ import { User } from './entities/user.entity';
 import { RolesModule } from '../role/roles.module';
 import { Member } from '../members/entities/member.entity';
 import { Club } from '../clubs/entities/club.entity';
+import { Wallet } from '../wallets/entities/wallet.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Member, Club]), RolesModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Member, Club, Wallet]),
+    RolesModule,
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
