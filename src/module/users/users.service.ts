@@ -20,6 +20,7 @@ import { Member } from '../members/entities/member.entity';
 import { Club } from '../clubs/entities/club.entity';
 import { Role } from '../role/entities/role.entity';
 import { UserFilterDto } from './dto/filter-user.dto';
+import { Wallet } from '../wallets/entities/wallet.entity';
 
 export const hashPassword = async (password: string) => {
   const salt = await genSalt(10);
@@ -37,6 +38,8 @@ export class UsersService {
     private membersRepository: Repository<Member>,
     @InjectRepository(Club)
     private clubsRepository: Repository<Club>,
+    @InjectRepository(Wallet)
+    private walletsRepository: Repository<Wallet>,
   ) {}
 
   async checkPassword(hash: string, password: string) {
@@ -77,6 +80,18 @@ export class UsersService {
     await this.membersRepository.insert({
       user: createdUser,
       club: commonClub,
+    });
+
+    // create wallet for user
+    const createdMember = await this.membersRepository.findOneBy({
+      user: createdUser,
+      club: commonClub,
+    });
+
+    await this.walletsRepository.insert({
+      club: commonClub,
+      member: createdMember,
+      balance: 50,
     });
 
     return result.generatedMaps[0];

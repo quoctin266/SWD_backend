@@ -17,10 +17,10 @@ export class Wallet {
   @Column()
   balance: number;
 
-  @ManyToOne(() => Member, { nullable: true })
+  @ManyToOne(() => Member, { nullable: true, eager: true })
   member: Member;
 
-  @ManyToOne(() => Club, { nullable: true })
+  @ManyToOne(() => Club, { nullable: true, eager: true })
   club: Club;
 
   @CreateDateColumn({ select: false })
