@@ -15,7 +15,7 @@ import { Member } from '../members/entities/member.entity';
 import { VinSlot } from '../vin-slots/entities/vin-slot.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostFilterDto } from './dto/filter-post.dto';
-import { ReactionFilterDto } from './dto/filter-reaction.dto';
+import { UpdateFilterDto } from './dto/filter-update.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
 
@@ -72,10 +72,9 @@ export class PostsService {
 
     const query = this.postsRepository
       .createQueryBuilder('post')
-      .leftJoinAndSelect('post.postedBy', 'member')
-      .leftJoinAndSelect('post.likes', 'member')
+      .leftJoinAndSelect('post.postedBy', 'postedBy')
+      .leftJoinAndSelect('post.likes', 'likes')
       .leftJoinAndSelect('post.vinSlot', 'vinSlot');
-
     if (contains)
       query.andWhere('post.content LIKE :contains', {
         contains: `%${contains}%`,
@@ -85,14 +84,14 @@ export class PostsService {
     if (vinSlot)
       query.andWhere('post.vinSlot = :vinSlot', { vinSlot: vinSlot });
 
-    const numberOfPost: number = await query.getCount();
+    const numberOfPost: number = (await query.getMany()).length;
     const totalPage: number = Math.ceil(numberOfPost / defaultLimit);
 
-    const sortCriteria: string[] = ['createdAt', 'updatedAt'];
+    const sortCriteria: string[] = ['createdAt', 'updatedAt', 'id'];
 
     const result = await query
       .orderBy(
-        sortCriteria.includes(sortBy) ? `post.${sortBy}` : '',
+        sortCriteria.includes(sortBy) ? `post.${sortBy}` : 'post.id',
         sortDescending ? 'DESC' : 'ASC',
       )
       .offset(offset)
@@ -111,17 +110,23 @@ export class PostsService {
   async findOne(id: number) {
     const post: Post = await this.postsRepository.findOne({
       where: { id },
-      relations: ['postedBy', 'vinSlot', 'likes', 'comments'],
+      relations: ['postedBy', 'vinSlot', 'likes'],
     });
     if (!post) throw new NotFoundException(NOTFOUND_POST);
     return post;
   }
 
-  async update(id: number, updatePostDto: UpdatePostDto) {
+  async update(
+    id: number,
+    updatePostDto: UpdatePostDto,
+    queryObj: UpdateFilterDto,
+  ) {
     const { content, postedBy, vinSlot } = updatePostDto;
+    const { memberId, isDislike } = queryObj;
 
     const post: Post = await this.postsRepository.findOne({
       where: { id },
+      relations: ['likes'],
     });
     if (!post) throw new NotFoundException(NOTFOUND_POST);
 
@@ -135,8 +140,25 @@ export class PostsService {
     });
     if (!vinSLotDb) throw new BadRequestException(NOTFOUND_SLOT);
 
-    const updatedPost = await this.postsRepository.update(id, {
-      ...updatePostDto,
+    if (memberId) {
+      if (!isDislike) {
+        const member: Member = await this.memberRepository.findOne({
+          where: { id: memberId },
+        });
+        if (!member) throw new BadRequestException(NOTFOUND_MEMBER);
+        post.likes = [...post.likes, member];
+      } else {
+        const member: Member = await this.memberRepository.findOne({
+          where: { id: memberId },
+        });
+        if (!member) throw new BadRequestException(NOTFOUND_MEMBER);
+        post.likes = post.likes.filter((like) => like.id !== memberId);
+      }
+    }
+
+    const updatedPost = await this.postsRepository.save({
+      ...post,
+      content,
       postedBy: postedByDb,
       vinSlot: vinSLotDb,
     });
@@ -149,26 +171,5 @@ export class PostsService {
     });
     if (!existingPost) throw new NotFoundException(NOTFOUND_POST);
     return this.postsRepository.softDelete({ id });
-  }
-
-  async likePost(postId: number, queryObj: ReactionFilterDto) {
-    const { memberId } = queryObj;
-
-    const post: Post = await this.postsRepository.findOne({
-      where: { id: postId },
-      relations: ['likes'],
-    });
-    if (!post) throw new NotFoundException(NOTFOUND_POST);
-
-    const member: Member = await this.memberRepository.findOne({
-      where: { id: memberId },
-    });
-    if (!member) throw new NotFoundException(NOTFOUND_MEMBER);
-
-    const updatedPost: Post = await this.postsRepository.save({
-      ...post,
-      likes: [...post.likes, member],
-    });
-    return updatedPost;
   }
 }

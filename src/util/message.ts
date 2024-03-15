@@ -102,3 +102,13 @@ export const DELTE_POST_SUCCESS = 'Post(s) deleted successfully';
 export const CREATE_POST_SUCCESS = 'Post(s) deleted successfully';
 export const INVALID_POST_ERROR = 'Post duplicated';
 export const NOTFOUND_POST = 'Post not found';
+
+export const DUPLICATED_COMMENT = 'Comment already existed';
+export const NOTFOUND_COMMENT = 'Comment not found';
+export const SUCCESS_GET_COMMENT = 'Get Comment detail successfully';
+export const FAIL_GET_COMMENT = 'Fail to get Comment detail';
+export const SUCCESS_CREATE_COMMENT = 'Create Comment successfully';
+export const FAIL_CREATE_COMMENT = 'Fail to create Comment';
+export const SUCCESS_UPDATE_COMMENT = 'Update Comment successfully';
+export const FAIL_UPDATE_COMMENT = 'Fail to update Comment';
+export const SUCCESS_DELETE_COMMENT = 'Delete Comment successfully';
