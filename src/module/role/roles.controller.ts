@@ -33,7 +33,7 @@ export class RolesController {
   @Get()
   @ResponseMessage(ROLE_LOAD_SUCCESS)
   findList() {
-    return this.roleService.findAll();
+    return this.roleService.findList();
   }
 
   @Get(':id')

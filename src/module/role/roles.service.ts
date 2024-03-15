@@ -49,7 +49,7 @@ export class RolesService {
     }
   }
 
-  async findAll() {
+  async findList() {
     const rolePermissions: Role[] = await this.rolesRepository.find();
     if (rolePermissions.length == 0) {
       throw new NotFoundException(FAIL_LOAD_ROLE);
