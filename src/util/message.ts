@@ -96,6 +96,22 @@ export const GET_SLOTS = 'Get slots list successfully';
 export const CREATE_SLOT = 'Create slot successfully';
 export const UPDATE_SLOT = 'Update slot successfully';
 
+export const GET_APPLICATION_DETAIL = 'Get application detail successfully';
+export const NOTFOUND_APPLICATION = 'Application not found';
+export const GET_APPLICATIONS = 'Get applications list successfully';
+export const CREATE_APPLICATION = 'Create application successfully';
+export const UPDATE_APPLICATION = 'Update application successfully';
+
+export const UPDATE_WALLET = 'Update wallet successfully';
+export const GET_WALLET_DETAIL = 'Get wallet detail successfully';
+export const NOTFOUND_WALLET = 'Wallet not found';
+
+export const GET_TRANSACTION_DETAIL = 'Get transaction detail successfully';
+export const NOTFOUND_TRANSACTION = 'Transaction not found';
+export const GET_TRANSACTIONS = 'Get transactions list successfully';
+export const CREATE_TRANSACTION = 'Create transaction successfully';
+export const DELETE_TRANSACTION = 'Delete transaction successfully';
+
 export const GET_POST_SUCCESS = 'Post(s) loaded successfully';
 export const UPDATE_POST_SUCCESS = 'Post(s) updated successfully';
 export const DELTE_POST_SUCCESS = 'Post(s) deleted successfully';

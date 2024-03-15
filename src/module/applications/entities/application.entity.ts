@@ -15,20 +15,21 @@ export class Application {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  // PENDING, COMLETED, CANCELED
+  @Column({ default: 'PENDING' })
   status: string;
 
-  @ManyToOne(() => Member)
+  @ManyToOne(() => Member, { eager: true })
   @JoinColumn({
     name: 'createdBy',
     referencedColumnName: 'id',
   })
   createdBy: Member;
 
-  @ManyToOne(() => VinSlot)
+  @ManyToOne(() => VinSlot, { eager: true })
   vinSlot: VinSlot;
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn({ select: false })
