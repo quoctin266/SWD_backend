@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { Permission } from './entities/permission.entity';
@@ -24,14 +24,8 @@ export class PermissionsService {
     if (existedPermission.length !== 0) {
       throw new HttpException('Duplicated permission', HttpStatus.BAD_REQUEST);
     } else {
-      const existingRoles = await this.roleRepository.find();
-      var roleArr: Role[] = [];
-      createPermissionDto.roles.map((role) => {
-        existingRoles.map((dbRole) => {
-          if (role === dbRole.name) {
-            roleArr.push(dbRole);
-          }
-        });
+      const roleArr = await this.roleRepository.find({
+        where: { id: In(createPermissionDto.roles) },
       });
       const permissionDto = {
         name: createPermissionDto.name,
@@ -46,15 +40,26 @@ export class PermissionsService {
     }
   }
 
-  async findList() {
-    const permissions = await this.permissionRepository.find();
+  async findList(roleId?: number) {
+    let permissions: Permission[];
+    if (!roleId) {
+      permissions = await this.permissionRepository.find();
+    } else {
+      const permissionsRole = await this.permissionRepository
+        .createQueryBuilder('permission')
+        .leftJoin('permission.roles', 'role')
+        .where('role.id=:roleId', { roleId });
+      permissions = await permissionsRole.getMany();
+    }
     return permissions;
   }
 
   async findOne(id: number) {
-    const existedPermission = await this.permissionRepository.findBy({
-      id: id,
-    });
+    const existedPermission: Permission[] =
+      await this.permissionRepository.find({
+        where: { id },
+        relations: ['roles'],
+      });
     if (existedPermission.length === 0) {
       throw new HttpException('Permission not found', HttpStatus.BAD_REQUEST);
     } else {
@@ -63,51 +68,33 @@ export class PermissionsService {
   }
 
   async update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    var updatePermission: Permission = await this.permissionRepository.findOne({
+    let updatePermission: Permission = await this.permissionRepository.findOne({
       where: { id },
       relations: ['roles'],
     });
     if (!updatePermission) {
       throw new HttpException('Permission not found', HttpStatus.BAD_REQUEST);
     } else {
-      var roleArr: Role[] = [];
-      if (updatePermissionDto.roles) {
-        if (updatePermissionDto.roles.length !== 0) {
-          const existingRoles = await this.roleRepository.find();
-          updatePermissionDto.roles.map((role) => {
-            existingRoles.map((dbRole) => {
-              if (role === dbRole.name) {
-                roleArr.push(dbRole);
-              }
-            });
-          });
-        }
+      let roleArr: Role[] = [];
+      if (updatePermissionDto.roles !== undefined) {
+        roleArr = await this.roleRepository.find({
+          where: { id: In(updatePermissionDto.roles) },
+        });
       }
-      updatePermission.name =
-        updatePermissionDto.name === undefined
-          ? updatePermission.name
-          : updatePermissionDto.name;
-      updatePermission.description =
-        updatePermissionDto.description === undefined
-          ? updatePermission.description
-          : updatePermissionDto.description;
-      updatePermission.roles =
-        roleArr.length === 0 ? updatePermission.roles : roleArr;
-      updatePermission.apiPath =
-        updatePermissionDto.apiPath === undefined
-          ? updatePermission.apiPath
-          : updatePermissionDto.apiPath;
-      updatePermission.method =
-        updatePermissionDto.method === undefined
-          ? updatePermission.method.toUpperCase()
-          : updatePermissionDto.method.toUpperCase();
-      const updatedPermission =
+      updatePermission = {
+        ...updatePermission,
+        ...updatePermissionDto,
+        roles: roleArr,
+      };
+
+      const updatedPermission: Permission =
         await this.permissionRepository.save(updatePermission);
+
       return updatedPermission;
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} permission`;
+  async remove(id: number) {
+    await this.permissionRepository.softDelete({ id: id });
   }
 }

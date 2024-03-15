@@ -6,6 +6,8 @@ import { LoginResponse } from './dto/login-response.dto';
 import { IUser } from '../users/dto/users.dto';
 import { GoogleAuthDto } from '../users/dto/google-auth.dto';
 import { RolesService } from '../role/roles.service';
+import { Request } from 'express';
+import { IGoogleUser } from './passport/google.strategy';
 
 @Injectable()
 export class AuthService {
@@ -112,6 +114,13 @@ export class AuthService {
         role: user.role.name,
       } as IUser,
     } as LoginResponse;
+  }
+
+  googleAuthServer(user: IGoogleUser) {
+    if (!user) return null;
+
+    const { email, firstName, lastName } = user;
+    return this.googleAuth({ email, username: firstName + lastName });
   }
 
   async processNewToken(refreshToken: string) {
