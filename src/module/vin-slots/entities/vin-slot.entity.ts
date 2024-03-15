@@ -43,7 +43,7 @@ export class VinSlot {
   @OneToMany(() => Application, (application) => application.vinSlot)
   applications: Application[];
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn({ select: false })
