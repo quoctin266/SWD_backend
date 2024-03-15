@@ -6,6 +6,7 @@ import { LoginResponse } from './dto/login-response.dto';
 import { IUser } from '../users/dto/users.dto';
 import { GoogleAuthDto } from '../users/dto/google-auth.dto';
 import { RolesService } from '../role/roles.service';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -112,6 +113,16 @@ export class AuthService {
         role: user.role.name,
       } as IUser,
     } as LoginResponse;
+  }
+
+  googleAuthServer(req: Request) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    return {
+      user: req.user,
+    };
   }
 
   async processNewToken(refreshToken: string) {
