@@ -1,5 +1,6 @@
 import { Area } from 'src/module/areas/entities/area.entity';
 import { SportType } from 'src/module/sport-types/entities/sport-type.entity';
+import { VinSlot } from 'src/module/vin-slots/entities/vin-slot.entity';
 import {
   Entity,
   Column,
@@ -8,6 +9,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -29,6 +31,9 @@ export class Court {
 
   @ManyToOne(() => Area, { eager: true })
   area: Area;
+
+  @OneToMany(() => VinSlot, (vinSlot) => vinSlot.court)
+  vinSlots: VinSlot[];
 
   @CreateDateColumn({ select: false })
   createdAt: Date;

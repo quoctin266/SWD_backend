@@ -37,6 +37,7 @@ export const CREATE_CLUB = 'Create club successfully';
 export const UPDATE_CLUB = 'Update club successfully';
 export const DELETE_CLUB = 'Delete club successfully';
 
+export const COUNT_COURT = 'Get courts count successfully';
 export const CONFLICT_COURT = 'Court already existed';
 export const NOTFOUND_COURT = 'court not found';
 export const GET_COURT_DETAIL = 'Get court detail successfully';

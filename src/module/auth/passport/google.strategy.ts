@@ -3,6 +3,14 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+export interface IGoogleUser {
+  email: string;
+
+  firstName: string;
+
+  lastName: string;
+}
+
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private configService: ConfigService) {
@@ -19,15 +27,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
-    console.log(profile);
-    const { name, emails, photos } = profile;
-    const user = {
+    const { name, emails } = profile;
+    const user: IGoogleUser = {
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
-      picture: photos[0].value,
-      accessToken,
-      refreshToken,
+      // picture: photos[0].value,
+      // accessToken,
+      // refreshToken,
     };
     done(null, user);
   }

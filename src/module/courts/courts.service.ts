@@ -13,6 +13,7 @@ import {
   NOTFOUND_SPORT_TYPE,
 } from 'src/util/message';
 import { CourtFilterDto } from './dto/filter-court.dto';
+import { CourtCountFilterDto } from './dto/filter-count.dto';
 
 @Injectable()
 export class CourtsService {
@@ -50,6 +51,31 @@ export class CourtsService {
     });
 
     return result.generatedMaps[0];
+  }
+
+  async count(queryObj: CourtCountFilterDto) {
+    const { year, top } = queryObj;
+
+    const courts = await this.courtsRepository
+      .createQueryBuilder('court')
+      .leftJoinAndSelect('court.vinSlots', 'vinSlot')
+      .andWhere(
+        'EXTRACT(YEAR FROM vinSlot.createdAt) = :year OR vinSlot.createdAt IS NULL',
+        { year },
+      )
+      .getMany();
+
+    const result = courts
+      .map((court) => {
+        return {
+          ...court,
+          vinSlots: court.vinSlots.length,
+        };
+      })
+      .sort((a, b) => b.vinSlots - a.vinSlots)
+      .slice(0, top);
+
+    return result;
   }
 
   async findList(queryObj: CourtFilterDto) {

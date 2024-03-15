@@ -7,6 +7,7 @@ import { IUser } from '../users/dto/users.dto';
 import { GoogleAuthDto } from '../users/dto/google-auth.dto';
 import { RolesService } from '../role/roles.service';
 import { Request } from 'express';
+import { IGoogleUser } from './passport/google.strategy';
 
 @Injectable()
 export class AuthService {
@@ -115,14 +116,11 @@ export class AuthService {
     } as LoginResponse;
   }
 
-  googleAuthServer(req: Request) {
-    if (!req.user) {
-      return 'No user from google';
-    }
+  googleAuthServer(user: IGoogleUser) {
+    if (!user) return null;
 
-    return {
-      user: req.user,
-    };
+    const { email, firstName, lastName } = user;
+    return this.googleAuth({ email, username: firstName + lastName });
   }
 
   async processNewToken(refreshToken: string) {
