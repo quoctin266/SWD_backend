@@ -40,7 +40,7 @@ export class PermissionsService {
     }
   }
 
-  async findList(roleId?: number) {
+  async findAll(roleId?: number) {
     let permissions: Permission[];
     if (!roleId) {
       permissions = await this.permissionRepository.find();
