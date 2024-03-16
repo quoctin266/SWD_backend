@@ -217,7 +217,7 @@ export class VinSlotsService {
       }
     }
     const countTimeRange =
-      endDate.diff(fromDate, weekly ? 'days' : 'months') + (weekly ? 0 : 1);
+      endDate.diff(fromDate, weekly ? 'days' : 'months') + 1;
     const totalPage: number = Math.ceil(countTimeRange / defaultLimit);
 
     const data: IMonthlySummary[] = [];
@@ -225,20 +225,32 @@ export class VinSlotsService {
 
     while (currentMonth.isSameOrBefore(endDate)) {
       if (weekly) {
-        const weekStart = currentMonth.startOf('week').toDate();
-        const weekEnd = currentMonth.endOf('week').toDate();
+        const tmpCurrentMonth = moment(currentMonth);
+        const weekStart = tmpCurrentMonth.startOf('day').toDate();
+        let weekEnd = null;
+        if (!tmpCurrentMonth.endOf('week').isAfter(endDate)) {
+          weekEnd = tmpCurrentMonth.endOf('week').toDate();
+        } else {
+          weekEnd = endDate.toDate();
+        }
+        const periodLength = moment(weekEnd).diff(weekStart, 'days') + 1;
 
-        for (let i = 0; i < 7; i++) {
-          const dayName = currentMonth.format('dddd');
+        for (let i = 0; i < periodLength; i++) {
+          const dayName = currentMonth.startOf('day').format('dddd');
           const count = await this.vinSlotsRepository.count({
             where: {
-              createdAt: Between(weekStart, weekEnd),
+              createdAt: Between(
+                currentMonth.startOf('day').toDate(),
+                currentMonth.endOf('day').toDate(),
+              ),
             },
           });
+          currentMonth.startOf('day');
 
           data.push({ name: dayName, value: count });
 
-          currentMonth.add(1, 'day');
+          if (!tmpCurrentMonth.startOf('day').isSame(currentMonth))
+            currentMonth.add(1, 'day');
         }
 
         currentMonth.startOf('week').add(1, 'week');
