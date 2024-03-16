@@ -16,6 +16,12 @@ import {
 } from 'src/util/message';
 import moment from 'moment';
 import { VinSlotFilterDto } from './dto/filter-vin-slot.dto';
+import { SummaryFilterDto } from './dto/filter-slot-summary.dto';
+
+export interface IMonthlySummary {
+  name: string;
+  value: number;
+}
 
 @Injectable()
 export class VinSlotsService {
@@ -191,5 +197,76 @@ export class VinSlotsService {
 
   remove(id: number) {
     return `This action removes a #${id} vinSlot`;
+  }
+
+  async getSummary(queryObj: SummaryFilterDto) {
+    const { summaryFrom, summaryTo, weekly, current } = queryObj;
+
+    const defaultLimit = weekly ? 7 : 12;
+    const defaultPage = current ? current : 1;
+    const offset = (defaultPage - 1) * defaultLimit;
+
+    const fromDate = moment(summaryFrom).startOf(weekly ? 'day' : 'month');
+    const endDate = moment(summaryTo).endOf(weekly ? 'day' : 'month');
+    if (weekly) {
+      const dateRange = endDate.diff(fromDate, 'days');
+      if (dateRange < 7 || dateRange > 31) {
+        throw new BadRequestException(
+          'Weekly data is only available from a week to a month.',
+        );
+      }
+    }
+    const countTimeRange =
+      endDate.diff(fromDate, weekly ? 'days' : 'months') + (weekly ? 0 : 1);
+    const totalPage: number = Math.ceil(countTimeRange / defaultLimit);
+
+    const data: IMonthlySummary[] = [];
+    let currentMonth = moment(fromDate);
+
+    while (currentMonth.isSameOrBefore(endDate)) {
+      if (weekly) {
+        const weekStart = currentMonth.startOf('week').toDate();
+        const weekEnd = currentMonth.endOf('week').toDate();
+
+        for (let i = 0; i < 7; i++) {
+          const dayName = currentMonth.format('dddd');
+          const count = await this.vinSlotsRepository.count({
+            where: {
+              createdAt: Between(weekStart, weekEnd),
+            },
+          });
+
+          data.push({ name: dayName, value: count });
+
+          currentMonth.add(1, 'day');
+        }
+
+        currentMonth.startOf('week').add(1, 'week');
+      } else {
+        const monthName = currentMonth.format('MMMM');
+        const monthStart = currentMonth.startOf('month').toDate();
+        const monthEnd = currentMonth.endOf('month').toDate();
+
+        const count = await this.vinSlotsRepository.count({
+          where: {
+            createdAt: Between(monthStart, monthEnd),
+          },
+        });
+
+        data.push({ name: monthName, value: count });
+
+        currentMonth.add(1, 'month');
+      }
+    }
+
+    const result = data.slice(offset, offset + defaultLimit);
+
+    return {
+      currentPage: defaultPage,
+      totalPages: totalPage,
+      pageSize: defaultLimit,
+      totalItems: countTimeRange,
+      items: result,
+    };
   }
 }
