@@ -14,6 +14,7 @@ import { UpdateCourtDto } from './dto/update-court.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from 'src/decorator/customize';
 import {
+  COUNT_COURT,
   CREATE_COURT,
   DELETE_COURT,
   GET_COURTS,
@@ -21,6 +22,7 @@ import {
   UPDATE_COURT,
 } from 'src/util/message';
 import { CourtFilterDto } from './dto/filter-court.dto';
+import { CourtCountFilterDto } from './dto/filter-count.dto';
 
 @ApiTags('courts')
 @Controller('courts')
@@ -31,6 +33,12 @@ export class CourtsController {
   @ResponseMessage(CREATE_COURT)
   create(@Body() createCourtDto: CreateCourtDto) {
     return this.courtsService.create(createCourtDto);
+  }
+
+  @Get('count')
+  @ResponseMessage(COUNT_COURT)
+  count(@Query() query: CourtCountFilterDto) {
+    return this.courtsService.count(query);
   }
 
   @Get()

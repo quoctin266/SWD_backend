@@ -1,7 +1,15 @@
-import { Controller, Post, UseGuards, Body, Res } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Body,
+  Res,
+  Get,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
@@ -19,6 +27,8 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { IUser } from '../users/dto/users.dto';
 import { LogoutResponse } from './dto/logout-response.dto';
 import { GoogleAuthDto } from '../users/dto/google-auth.dto';
+import { GoogleOAuthGuard } from './guard/google-oauth.guard';
+import { IGoogleUser } from './passport/google.strategy';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -53,6 +63,19 @@ export class AuthController {
   @ResponseMessage(LOGIN_SUCCESS)
   googleAuth(@Body() googleAuthDto: GoogleAuthDto) {
     return this.authService.googleAuth(googleAuthDto);
+  }
+
+  @Public()
+  @Get('google-auth-server')
+  @UseGuards(GoogleOAuthGuard)
+  googleAuthServer(@Req() req: Request) {}
+
+  @Public()
+  @Get('google-redirect')
+  @ResponseMessage(LOGIN_SUCCESS)
+  @UseGuards(GoogleOAuthGuard)
+  googleAuthRedirect(@Req() req: Request) {
+    return this.authService.googleAuthServer(req.user as IGoogleUser);
   }
 
   // @Get('account')
