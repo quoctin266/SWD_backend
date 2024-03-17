@@ -34,8 +34,8 @@ export class PermissionsController {
 
   @Get()
   @ResponseMessage(PERMISSION_LOAD_SUCCESS)
-  findAll(@Query('roleId') roleId?: string) {
-    return this.permissionsService.findAll(+roleId ?? null);
+  findList(@Query('roleId') roleId?: string) {
+    return this.permissionsService.findList(+roleId ?? null);
   }
 
   @Get(':id')
