@@ -22,6 +22,8 @@ import { TransactionsModule } from './module/transactions/transactions.module';
 import { AuthModule } from './module/auth/auth.module';
 import { DatabasesModule } from './database/database.module';
 import { FilesModule } from './module/files/files.module';
+import { MailModule } from './module/mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { FilesModule } from './module/files/files.module';
       envFilePath: '.production.env',
     }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
+    ScheduleModule.forRoot(),
     UsersModule,
     RolesModule,
     PermissionsModule,
@@ -48,6 +51,7 @@ import { FilesModule } from './module/files/files.module';
     AuthModule,
     DatabasesModule,
     FilesModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
