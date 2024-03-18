@@ -8,6 +8,7 @@ import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { VinSlot } from '../vin-slots/entities/vin-slot.entity';
 import { User } from '../users/entities/user.entity';
+import { Member } from '../members/entities/member.entity';
 
 @Module({
   imports: [
@@ -20,19 +21,22 @@ import { User } from '../users/entities/user.entity';
             user: configService.get<string>('APP_EMAIL'),
             pass: configService.get<string>('APP_PASSWORD'),
           },
+          tls: {
+            rejectUnauthorized: false,
+          },
         },
         template: {
           dir: join(__dirname, 'templates'),
-          adapter: new EjsAdapter(),
+          adapter: new EjsAdapter({ inlineCssEnabled: true }),
           options: {
-            strict: true,
+            strict: false,
           },
         },
-        preview: true,
+        preview: false,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([VinSlot, User]),
+    TypeOrmModule.forFeature([VinSlot, User, Member]),
   ],
   controllers: [MailController],
   providers: [MailService],

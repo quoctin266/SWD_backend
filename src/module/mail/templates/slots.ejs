@@ -4,13 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body
-    style="
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
-        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    "
-  >
+  <body>
     <table
       style="
         max-width: 80rem;
@@ -35,7 +29,7 @@
                 </div>
               </td>
             </tr>
-            <!-- <tr>
+            <tr>
               <td
                 colspan="2"
                 style="
@@ -49,7 +43,7 @@
                 <div style="text-align: left">
                   <div style="font-size: 16px">Hi <%= user.username %>,</div>
                   <div style="font-size: 16px">
-                    Available slots for you!
+                    New Available slots for you!
                   </div>
                 </div>
               </td>
@@ -65,53 +59,47 @@
             </tr>
             <tr>
               <td colspan="2">
-                <table style="width: 100%">
                   <% for(let i=0; i < slots.length; i++) { %>
-                  <tr>
-                    <td>
-                      <tr>
-                        <td style="font-size: 14px; color: #15c">
-                          <%= slots[i].court.type %>
-                        </td>
-                        <td style="font-size: 14px">
-                          <%= slots[i].court.name %>
-                        </td>
-                      </tr>
-                      <tr>
-                        <span style="font-size: 14px"
-                          ><%= slots[i].capacity %> slots</span
+                  <div>
+                      <div style="margin: 10px 0;">
+                        <span style="font-size: 20px; color: #15c">
+                          <%= slots[i].court.sportType.name %>
+                        </span>
+                        <span style="font-size: 20px; float: right;">
+                          Court: <%= slots[i].court.name %>
+                        </span>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <span style="font-size: 20px;"
+                          >Slots: <%= slots[i].capacity %></span
                         >
-                      </tr>
-                      <tr>
-                        <span style="font-size: 14px"
+                      </div>
+                      <div style="margin-bottom: 5px;">
+                        <span style="font-size: 16px"
                           >Begin: <%= slots[i].beginAt %></span
                         >
-                      </tr>
-                      <tr>
-                        <span style="font-size: 14px"
+                      </div>
+                      <div>
+                        <span style="font-size: 16px"
                           >End: <%= slots[i].endAt %></span
                         >
-                      </tr>
-                      <tr>
-                        <td colspan="2">
+                      </div>
+                      <div>
                           <div
                             style="
                               margin: 15px 0;
                               border-top: 1px dashed rgba(5, 5, 5, 0.06);
                             "
                           ></div>
-                        </td>
-                      </tr>
-                    </td>
-                  </tr>
+                      </div>
+                  </div>
                   <% } %>
-                </table>
               </td>
-            </tr> -->
+            </tr>
             <tr>
               <td colspan="2" style="text-align: center">
                 <a
-                  href="<%= http://localhost:3000 %>"
+                  href="http://localhost:3000"
                   target="_blank"
                   style="
                     display: inline-block;
@@ -128,7 +116,7 @@
                     font-size: 16px;
                   "
                 >
-                  Visit Us
+                  Find More
                 </a>
               </td>
             </tr>
