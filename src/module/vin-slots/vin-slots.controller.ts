@@ -8,9 +8,11 @@ import {
   CREATE_SLOT,
   GET_SLOTS,
   GET_SLOT_DETAIL,
+  GET_SLOT_SUMMARY,
   UPDATE_SLOT,
 } from 'src/util/message';
 import { VinSlotFilterDto } from './dto/filter-vin-slot.dto';
+import { SummaryFilterDto } from './dto/filter-slot-summary.dto';
 
 @ApiTags('vin slots')
 @Controller('vin-slots')
@@ -21,6 +23,13 @@ export class VinSlotsController {
   @ResponseMessage(CREATE_SLOT)
   create(@Body() createVinSlotDto: CreateVinSlotDto) {
     return this.vinSlotsService.create(createVinSlotDto);
+  }
+
+  @Public()
+  @Get('/summary')
+  @ResponseMessage(GET_SLOT_SUMMARY)
+  getSummary(@Query() query: SummaryFilterDto) {
+    return this.vinSlotsService.getSummary(query);
   }
 
   @Public()
