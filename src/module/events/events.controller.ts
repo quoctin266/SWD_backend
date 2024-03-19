@@ -12,7 +12,7 @@ import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   CREATE_EVENT,
   GET_EVENTS,
@@ -32,12 +32,14 @@ export class EventsController {
     return this.eventsService.create(createEventDto);
   }
 
+  @Public()
   @Get()
   @ResponseMessage(GET_EVENTS)
   findList(@Query() query: EventFilterDto) {
     return this.eventsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(GET_EVENT_DETAIL)
   findOne(@Param('id') id: number) {
