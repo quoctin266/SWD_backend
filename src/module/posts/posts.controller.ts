@@ -15,6 +15,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { PostFilterDto } from './dto/filter-post.dto';
 import { UpdateFilterDto } from './dto/filter-update.dto';
+import { Public } from 'src/decorator/customize';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -26,11 +27,13 @@ export class PostsController {
     return this.postsService.create(createPostDto);
   }
 
+  @Public()
   @Get()
   findList(@Query() query: PostFilterDto) {
     return this.postsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(+id);

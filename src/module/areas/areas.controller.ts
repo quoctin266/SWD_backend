@@ -12,7 +12,7 @@ import { AreasService } from './areas.service';
 import { CreateAreaDto } from './dto/create-area.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   CREATE_AREA,
   DELETE_AREA,
@@ -39,6 +39,7 @@ export class AreasController {
     return this.areasService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(GET_AREA_DETAIL)
   findOne(@Param('id') id: number) {
