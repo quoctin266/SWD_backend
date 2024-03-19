@@ -28,3 +28,4 @@ jobs:
     - run: |
         touch .production.env
         echo "${{ secrets.PROD_ENV_FILE }}" > .production.env
+    - run: pm2 restart BackendAPI
