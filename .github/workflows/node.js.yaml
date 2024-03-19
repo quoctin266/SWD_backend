@@ -1,0 +1,38 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  # build:
+  #   runs-on: self-hosted
+
+  #   strategy:
+  #     matrix:
+  #       node-version: [18.x]
+
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache: 'npm'
+  #     - run: npm ci
+  #     - run: |
+  #         touch .production.env
+  #         echo "${{ secrets.PROD_ENV_FILE }}" > .production.env
+  #     - run: pm2 restart BackendAPI
+
+  deploy:
+    name: Deploy
+    # needs: [test]
+    runs-on: ubuntu-lastest
+
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}

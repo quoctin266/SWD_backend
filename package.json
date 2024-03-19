@@ -7,7 +7,6 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "npm install && nest build",
-    "buildCICD": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start --watch",
     "start:dev": "nest start --watch",
