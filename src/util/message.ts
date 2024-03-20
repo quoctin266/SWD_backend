@@ -7,6 +7,7 @@ export const LOGIN_SUCCESS = 'Login successfully';
 export const REGISTER_SUCCESS = 'Register successfully';
 export const GET_NEW_TOKEN = 'Get new token successfully';
 export const LOGOUT_SUCCESS = 'Logout successfully';
+export const FORBIDDEN_ACCESS = 'You are not allowed to perform this action';
 
 export const PERMISSION_LOAD_SUCCESS = 'Permissions loaded successfully';
 export const PERMISSION_UPDATE_SUCCESS = 'Permissions updated successfully';

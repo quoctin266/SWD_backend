@@ -8,18 +8,20 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { TransformInterceptor } from './core/transform.interceptor';
 import { JwtAuthGuard } from './module/auth/guard/jwt-auth.guard';
+import { DataSource } from 'typeorm';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const reflector = app.get(Reflector);
+  const dataSource = app.get(DataSource);
 
   app.use(cookieParser());
 
   app.enableCors({ origin: 'http://localhost:3000', credentials: true });
 
   // set global for jwt guard
-  app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalGuards(new JwtAuthGuard(reflector, dataSource));
 
   // set global for interceptor
   app.useGlobalInterceptors(new TransformInterceptor(reflector));
