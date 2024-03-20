@@ -12,7 +12,7 @@ import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   SUCCESS_CREATE_COMMENT,
   SUCCESS_DELETE_COMMENT,
@@ -32,12 +32,14 @@ export class CommentsController {
     return this.commentsService.create(createCommentDto);
   }
 
+  @Public()
   @Get()
   @ResponseMessage(SUCCESS_GET_COMMENT)
   findList(@Query() query: CommentFilterDto) {
     return this.commentsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(SUCCESS_GET_COMMENT)
   findOne(@Param('id') id: string) {

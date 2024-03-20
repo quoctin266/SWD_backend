@@ -12,7 +12,7 @@ import { SportTypesService } from './sport-types.service';
 import { CreateSportTypeDto } from './dto/create-sport-type.dto';
 import { UpdateSportTypeDto } from './dto/update-sport-type.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   CREATE_SPORT_TYPE,
   DELETE_SPORT_TYPE,
@@ -39,6 +39,7 @@ export class SportTypesController {
     return this.sportTypesService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(GET_SPORT_TYPE_DETAIL)
   findOne(@Param('id') id: number) {
