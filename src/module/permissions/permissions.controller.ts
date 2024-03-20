@@ -8,6 +8,8 @@ import {
   Delete,
   ParseIntPipe,
   Query,
+  UseGuards,
+  SetMetadata,
 } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -20,6 +22,7 @@ import {
   PERMISSION_LOAD_SUCCESS,
   PERMISSION_UPDATE_SUCCESS,
 } from 'src/util/message';
+import { AuthorizationGuard } from '../auth/guard/authorization.guard';
 
 @ApiTags('permissions')
 @Controller('permissions')

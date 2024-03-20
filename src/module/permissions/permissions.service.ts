@@ -45,11 +45,15 @@ export class PermissionsService {
     if (!roleId) {
       permissions = await this.permissionRepository.find();
     } else {
-      const permissionsRole = await this.permissionRepository
+      const query = this.permissionRepository
         .createQueryBuilder('permission')
-        .leftJoin('permission.roles', 'role')
-        .where('role.id=:roleId', { roleId });
-      permissions = await permissionsRole.getMany();
+        .leftJoinAndSelect('permission.roles', 'roles');
+      permissions = await query.getMany();
+      if (roleId) {
+        permissions.filter((permission) =>
+          permission.roles.find((role) => role.id === roleId),
+        );
+      }
     }
     return permissions;
   }

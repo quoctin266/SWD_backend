@@ -39,10 +39,10 @@ export class CreatePermissionDto {
 
   @IsNotEmpty()
   @ApiProperty({
-    example: 'api/v1/users',
+    example: '/api/v1/users',
     default: null,
   })
-  @Matches(/^api\/v1/, { message: 'API must starts with api/v1/...' })
+  @Matches(/^\/api\/v1/, { message: 'API must starts with /api/v1/...' })
   apiPath: string;
 
   @IsNotEmpty()
