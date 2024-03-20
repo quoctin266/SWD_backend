@@ -12,7 +12,7 @@ import { CourtsService } from './courts.service';
 import { CreateCourtDto } from './dto/create-court.dto';
 import { UpdateCourtDto } from './dto/update-court.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ResponseMessage } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import {
   COUNT_COURT,
   CREATE_COURT,
@@ -41,12 +41,14 @@ export class CourtsController {
     return this.courtsService.count(query);
   }
 
+  @Public()
   @Get()
   @ResponseMessage(GET_COURTS)
   findList(@Query() query: CourtFilterDto) {
     return this.courtsService.findList(query);
   }
 
+  @Public()
   @Get(':id')
   @ResponseMessage(GET_COURT_DETAIL)
   findOne(@Param('id') id: number) {
