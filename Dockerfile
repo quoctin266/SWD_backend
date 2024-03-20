@@ -10,14 +10,6 @@ COPY package*.json ./
 # Copy the rest of the application code to the working directory
 COPY . .
 
-ADD src /swd-backend/src
-
-# Install dependencies
-RUN npm install
-
-# build project
-RUN npm run buildCICD
-
 # Expose the port the app runs on
 EXPOSE 8080
 
