@@ -32,23 +32,23 @@ jobs:
           npm run buildCICD
           if [ $? -ne 0 ]; then exit 1; fi
 
-  build_docker:
-    name: Build and Push Docker Image
-    needs: [build_nestjs]
-    runs-on: ubuntu-latest
+  # build_docker:
+  #   name: Build and Push Docker Image
+  #   needs: [build_nestjs]
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: quoctin266/swdcicd
-          tags: latest
-          registry: docker.io
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+  #     - name: Build and Push Docker Image
+  #       uses: mr-smithers-excellent/docker-build-push@v6
+  #       with:
+  #         image: quoctin266/swdcicd
+  #         tags: latest
+  #         registry: docker.io
+  #         username: ${{ secrets.DOCKER_USERNAME }}
+  #         password: ${{ secrets.DOCKER_PASSWORD }}
 
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@v3
@@ -64,13 +64,13 @@ jobs:
       #   run: |
       #     docker push yourdockerhubusername/yourimagename
 
-  # deploy:
-  #   name: Deploy
-  #   runs-on: ubuntu-latest
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Deploy to production
-  #       uses: johnbeynon/render-deploy-action@v0.0.8
-  #       with:
-  #         service-id: ${{ secrets.SERVICE_ID }}
-  #         api-key: ${{ secrets.RENDER_API_KEY }}
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
