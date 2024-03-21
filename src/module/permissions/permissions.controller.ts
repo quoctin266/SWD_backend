@@ -1,17 +1,14 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { PermissionsService } from './permissions.service';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from 'src/decorator/customize';
 import {
@@ -20,6 +17,9 @@ import {
   PERMISSION_LOAD_SUCCESS,
   PERMISSION_UPDATE_SUCCESS,
 } from 'src/util/message';
+import { CreatePermissionDto } from './dto/create-permission.dto';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { PermissionsService } from './permissions.service';
 
 @ApiTags('permissions')
 @Controller('permissions')
