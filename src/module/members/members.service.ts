@@ -31,7 +31,7 @@ export class MembersService {
 
     if (!club) throw new BadRequestException(NOTFOUND_CLUB);
     if (!user) throw new BadRequestException(NOTFOUND_USER);
-    console.log(club);
+
     const result = await this.membersRepository.insert({ club: club, user });
 
     return result.generatedMaps[0];

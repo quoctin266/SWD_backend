@@ -10,7 +10,6 @@ export class EventSeeder implements Seeder {
   private readonly logger = new Logger(EventSeeder.name);
 
   public async run(dataSource: DataSource): Promise<any> {
-    console.log(eventData.length);
     const eventRepository = dataSource.getRepository(Event);
     const clubRepository = dataSource.getRepository(Club);
 

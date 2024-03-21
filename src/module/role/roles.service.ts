@@ -74,7 +74,7 @@ export class RolesService {
       where: { id },
       relations: ['permissions'],
     });
-    console.log(role);
+
     if (!role) {
       throw new NotFoundException(FAIL_LOAD_ROLE);
     }

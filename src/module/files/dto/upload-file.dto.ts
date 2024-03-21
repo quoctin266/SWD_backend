@@ -4,7 +4,7 @@ import { Express } from 'express';
 
 export class UploadFileDto {
   @ApiProperty({ type: 'string', format: 'binary' })
-  file: Express.Multer.File;
+  file?: Express.Multer.File;
 
   @IsNotEmpty()
   folderType: string;

@@ -61,7 +61,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
           permission.method === targetMethod
         );
       });
-      console.log(isExist);
     });
 
     // // let all role use auth API

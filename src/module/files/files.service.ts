@@ -25,7 +25,10 @@ export class FilesService {
   };
 
   async uploadAWS(data: UploadFileDto, file: Express.Multer.File) {
-    const { folderType, folderName } = data;
+    let { folderType, folderName } = data;
+
+    folderType = folderType ? folderType : 'others';
+    folderName = folderName ? folderName : 'default';
 
     const s3 = new AWS.S3();
 
