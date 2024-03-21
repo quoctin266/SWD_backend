@@ -1,4 +1,5 @@
 import { Area } from 'src/module/areas/entities/area.entity';
+import { File } from 'src/module/files/entities/file.entity';
 import { SportType } from 'src/module/sport-types/entities/sport-type.entity';
 import { VinSlot } from 'src/module/vin-slots/entities/vin-slot.entity';
 import {
@@ -31,6 +32,9 @@ export class Court {
 
   @ManyToOne(() => Area, { eager: true })
   area: Area;
+
+  @ManyToOne(() => File, { eager: true, nullable: true })
+  file: File;
 
   @OneToMany(() => VinSlot, (vinSlot) => vinSlot.court)
   vinSlots: VinSlot[];

@@ -14,6 +14,9 @@ import {
 } from 'src/util/message';
 import { CourtFilterDto } from './dto/filter-court.dto';
 import { CourtCountFilterDto } from './dto/filter-count.dto';
+import { FilesService } from '../files/files.service';
+import { UploadFileDto } from '../files/dto/upload-file.dto';
+import { File } from '../files/entities/file.entity';
 
 @Injectable()
 export class CourtsService {
@@ -24,9 +27,15 @@ export class CourtsService {
     private sportTypesRepository: Repository<SportType>,
     @InjectRepository(Area)
     private areasRepository: Repository<Area>,
+    @InjectRepository(File)
+    private filesRepository: Repository<File>,
+    private filesService: FilesService,
   ) {}
 
-  async create(createCourtDto: CreateCourtDto) {
+  async create(
+    uploadedFile: Express.Multer.File,
+    createCourtDto: CreateCourtDto,
+  ) {
     const { name, sportTypeId, areaId } = createCourtDto;
 
     const existCourt = await this.courtsRepository.existsBy({ name });
@@ -44,10 +53,24 @@ export class CourtsService {
       id: sportTypeId,
     });
     const area = await this.areasRepository.findOneBy({ id: areaId });
+
+    const { file, ...data } = createCourtDto;
+
+    const metadata: UploadFileDto = {
+      folderName: '',
+      folderType: '',
+    };
+
+    const uploadResult = await this.filesService.create(metadata, uploadedFile);
+    const createdFile = await this.filesRepository.findOneBy({
+      id: uploadResult.id,
+    });
+
     const result = await this.courtsRepository.insert({
-      ...createCourtDto,
+      ...data,
       sportType,
       area,
+      file: createdFile,
     });
 
     return result.generatedMaps[0];
@@ -98,7 +121,8 @@ export class CourtsService {
       .createQueryBuilder('court')
       .leftJoin('court.sportType', 'sportType')
       .leftJoin('court.area', 'area')
-      .select(['sportType.name', 'area.name', 'court']);
+      .leftJoin('court.file', 'file')
+      .select(['sportType.name', 'file.url', 'area.name', 'court']);
 
     if (name) query.andWhere('court.name ILike :name', { name: `%${name}%` });
     if (typeof isAvailable === 'boolean')
@@ -150,8 +174,12 @@ export class CourtsService {
     return { ...court, sportType: court.sportType.name, area: court.area.name };
   }
 
-  async update(id: number, updateCourtDto: UpdateCourtDto) {
-    const { name, sportTypeId, areaId, ...rest } = updateCourtDto;
+  async update(
+    id: number,
+    updateCourtDto: UpdateCourtDto,
+    uploadedFile: Express.Multer.File,
+  ) {
+    const { name, sportTypeId, areaId, file, ...rest } = updateCourtDto;
 
     const existCourt = await this.courtsRepository.existsBy({ id });
     if (!existCourt) throw new BadRequestException(NOTFOUND_COURT);
@@ -167,11 +195,22 @@ export class CourtsService {
     const area = await this.areasRepository.findOneBy({ id: areaId });
     if (!area) throw new BadRequestException(NOTFOUND_AREA);
 
+    const metadata: UploadFileDto = {
+      folderName: '',
+      folderType: '',
+    };
+
+    const uploadResult = await this.filesService.create(metadata, uploadedFile);
+    const createdFile = await this.filesRepository.findOneBy({
+      id: uploadResult.id,
+    });
+
     return this.courtsRepository.update(id, {
       ...rest,
       name,
       sportType,
       area,
+      file: createdFile,
     });
   }
 
